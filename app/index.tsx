@@ -6,26 +6,46 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
+import { useAuth } from '@/context/AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Login() {
   const colorScheme = useColorScheme(); 
 
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState('client1@test.com');
+	const [password, setPassword] = useState('123456');
 	const [loading, setLoading] = useState(false);
 
+  const { onLogin, onLogout, role } = useAuth();
 
   const login = async () => {
 		setLoading(true);
+    const result = await onLogin!(email, password);
+        
+    if (result && result.error) {
+      alert(result.error)
+      console.log('app/index - Result error:', result.error);
+    }
+       
+    setLoading(false)
+  }
+
+  const handleLogout = () => {
+   onLogout!();
   }
 
   const handleCreateAccount = () => {
     router.navigate('/register')
   }
 
+  console.log('index - role:', role);
+  
+  
+  
+
   return (
 		<View style={styles.container}>
-      
+
       {colorScheme === 'light' ? (
         <Image
           source={require( '../assets/icons/TempLogo.png' )}
@@ -64,6 +84,10 @@ export default function Login() {
       <Spacer />
 
       <Button TextValue='Create Account' Function={handleCreateAccount} Background='#fff' TextColor={Colors.light.text} />
+      
+      <Spacer />
+
+      <Button TextValue='Log Out' Function={handleLogout} Background='#fff' TextColor={Colors.light.text} />
 
 			{loading && (
 				<View
