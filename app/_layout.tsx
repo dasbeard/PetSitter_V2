@@ -6,25 +6,23 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 import { useColorScheme } from '@/components/useColorScheme';
+import { StatusBar } from 'expo-status-bar';
+import Colors from '@/constants/Colors';
 
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+const InitialLayout = () => {
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+  const colorScheme = useColorScheme();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -41,18 +39,42 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+      <Stack
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: Colors.brand[500]
+          },
+          headerTintColor: Colors.dark.text
+        }}
+      >
+        <Stack.Screen 
+          name="index" 
+          options={{ 
+            headerShown: false 
+          }} 
+        />
+        
+        <Stack.Screen 
+          name='register' 
+          options={{ 
+            title: 'Create Account',
+            headerBackTitle: 'Login',
+            }} 
+        />
+               
+        <Stack.Screen name="(authenticated)" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
+    
   );
+}
+
+export default function RootLayout() {
+
+  return (
+      <InitialLayout />
+  )
 }
