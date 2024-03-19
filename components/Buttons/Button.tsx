@@ -12,7 +12,8 @@ export default function Button ({
   Selected=false,
   ButtonWidth,
   TextColor,
-  Background,
+  BackgroundColor,
+  BorderColor,
   BoldText=false,
 } : {
   Disabled?: boolean, 
@@ -21,7 +22,8 @@ export default function Button ({
   Selected?: boolean,
   ButtonWidth?: number,
   TextColor?: string,
-  Background?: string,
+  BackgroundColor?: string,
+  BorderColor?: string,
   BoldText?: boolean,
 }) {
   
@@ -42,7 +44,8 @@ export default function Button ({
             style={[
               styles(Selected, colorScheme!).innerContainer,
               Selected ? styles(Selected, colorScheme!, pressed).Selected : InteractiveStyles(pressed, colorScheme!).Shadow, 
-              Background ? ({backgroundColor: Background}) : (null)
+              BackgroundColor ? ({backgroundColor: BackgroundColor}) : (null),
+              BorderColor ? ({borderColor: BorderColor}) : (null),
             ]}
           >
             <Text style={[

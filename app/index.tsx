@@ -26,7 +26,6 @@ export default function Login() {
       alert(result.error)
       console.log('app/index - Result error:', result.error);
     }
-       
     setLoading(false)
   }
 
@@ -36,12 +35,7 @@ export default function Login() {
 
   const handleCreateAccount = () => {
     router.navigate('/register')
-  }
-
-  console.log('index - role:', role);
-  
-  
-  
+  } 
 
   return (
 		<View style={styles.container}>
@@ -79,15 +73,15 @@ export default function Login() {
 
       <Spacer Size={4} />
 
-      <Button TextValue='Sign In' Function={login}  />
+      <Button TextValue='Sign In' Function={login} />
 
       <Spacer />
 
-      <Button TextValue='Create Account' Function={handleCreateAccount} Background='#fff' TextColor={Colors.light.text} />
+      <Button TextValue='Create Account' Function={handleCreateAccount} BackgroundColor='#fff' TextColor={Colors.light.text} />
       
       <Spacer />
 
-      <Button TextValue='Log Out' Function={handleLogout} Background='#fff' TextColor={Colors.light.text} />
+      <Button TextValue='Log Out' Function={handleLogout} BackgroundColor='#fff' TextColor={Colors.light.text} />
 
 			{loading && (
 				<View
