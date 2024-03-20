@@ -1,13 +1,37 @@
 import { StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { View, Text } from '@/components/Themed'
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
 import { useAuth } from '@/context/AuthContext';
-import { jwtDecode } from 'jwt-decode';
+
+
+
+const ErrorComponent = ({error}: any) => {
+  return (
+    <View style={errorStyles.container}>
+      <Text style={errorStyles.text}>Error: {error}</Text>
+    </View>
+  )
+}
+
+const errorStyles = StyleSheet.create({
+  container: {
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: Colors.red[500],
+    padding: 6,
+    backgroundColor: Colors.red[100],
+    marginBottom: 3,
+  },
+  text:{
+    color: Colors.red[900],
+    fontWeight: '600',
+  }
+})
 
 export default function Login() {
   const colorScheme = useColorScheme(); 
@@ -15,18 +39,26 @@ export default function Login() {
 	const [email, setEmail] = useState('client1@test.com');
 	const [password, setPassword] = useState('123456');
 	const [loading, setLoading] = useState(false);
+  const [ error, setError ] = useState<string | null>(null)
 
-  const { onLogin, onLogout, role } = useAuth();
+  const { onLogin, onLogout } = useAuth();
 
   const login = async () => {
+    setError(null)
 		setLoading(true);
-    const result = await onLogin!(email, password);
-        
-    if (result && result.error) {
-      alert(result.error)
-      console.log('app/index - Result error:', result.error);
+    try {
+      const { error }: any = await onLogin!(email, password);
+      if (error) throw error
+    } catch (error:any) {
+      const errorString = error.toString();
+      const newError = errorString.substring(errorString.indexOf(' ') + 1);
+      // console.log(error.toString().substring(error.indexOf(' ') + 1));
+      // alert(error)
+      setError(newError)
+    } finally {
+      setLoading(false)
+
     }
-    setLoading(false)
   }
 
   const handleLogout = () => {
@@ -54,6 +86,11 @@ export default function Login() {
 
 			<Text style={styles.subheader}>The app to be.</Text>
 
+      { error && <ErrorComponent error={error} /> }
+      {/* <Text>Error: {error}</Text> */}
+      
+      
+
 			<TextInput
 				autoCapitalize="none"
 				placeholder="john@doe.com"
@@ -79,9 +116,9 @@ export default function Login() {
 
       <Button TextValue='Create Account' Function={handleCreateAccount} BackgroundColor='#fff' TextColor={Colors.light.text} />
       
-      <Spacer />
+      {/* <Spacer /> */}
 
-      <Button TextValue='Log Out' Function={handleLogout} BackgroundColor='#fff' TextColor={Colors.light.text} />
+      {/* <Button TextValue='Log Out' Function={handleLogout} BackgroundColor='#fff' TextColor={Colors.light.text} /> */}
 
 			{loading && (
 				<View
@@ -124,21 +161,4 @@ const styles = StyleSheet.create({
 		color: Colors.brand[800],
 		backgroundColor: Colors.blue[100]
 	},
-	button: {
-		marginTop: 20,
-		alignItems: 'center',
-		backgroundColor: Colors.brand[500],
-		padding: 12,
-		borderRadius: 4
-	},
-	outlineButton: {
-		marginVertical: 8,
-		alignItems: 'center',
-		backgroundColor: 'transparent',
-		padding: 12,
-		borderRadius: 4,
-		borderWidth: 1,
-		// borderColor: Colors.blue[500]
-		borderColor: Colors.brand[500]
-	}
 });

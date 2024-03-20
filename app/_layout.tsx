@@ -8,6 +8,7 @@ import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
+import { Platform } from 'react-native';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -98,6 +99,7 @@ const InitialLayout = () => {
           options={{ 
             title: 'Create Account',
             headerBackTitle: 'Login',
+            headerShown: Platform.OS === 'web' ? false : true
             }} 
         />
                

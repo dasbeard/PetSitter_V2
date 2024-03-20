@@ -1,5 +1,5 @@
 import { supabase } from "@/util/supabase";
-import { Session, User } from "@supabase/supabase-js";
+import { Session, User, AuthError } from "@supabase/supabase-js";
 import "core-js/stable/atob";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -13,7 +13,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 type AuthProps = {
   session: Session | null;
   onRegister: (email: string, password: string) => Promise<any>;
-  onLogin: (email: string, password: string) => Promise<any>;
+  onLogin: (email: string, password: string) => Promise<Session | AuthError | null>;
+  // onLogin: (email: string, password: string) => Promise<any>;
   onLogout: () => void;
   initialized: boolean;
   role: string | null;
@@ -68,13 +69,38 @@ export const AuthProvider = ({ children }: any ) => {
       email,
       password,
     });
-    if (error) return Promise.reject(error);
     
+    if (error) {     
+      return Promise.reject(error)
+    };
+        
     const jwt = jwtDecode<JWT>(data.session.access_token)
     setRole(jwt.user_role)
     setSession(data.session)
+        
+    return Promise.resolve(data.session);
+  }
+
+
+  const handleRegister = async (email: string, password: string) => {
+    if (!email) return Promise.reject('Email is required');
+    if (!password) return Promise.reject('Password is required');
     
-    return Promise.resolve(data);
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    
+    if(error) return Promise.reject(error);
+    
+    if (data.session){
+      const jwt = jwtDecode<JWT>(data.session.access_token)
+      setRole(jwt.user_role)
+      setSession(data.session)
+    }
+
+    return Promise.resolve(data.user);
+  
   }
 
   const handleLogout = () => {
@@ -87,6 +113,7 @@ export const AuthProvider = ({ children }: any ) => {
     initialized,
     onLogin: handleLogin,
     onLogout: handleLogout,
+    onRegister: handleRegister,
     session,
     role
   }
