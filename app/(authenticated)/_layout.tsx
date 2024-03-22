@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 // AppState.addEventListener('change', (state) => {
 //   if (state === 'active') {
@@ -12,10 +13,13 @@ import { Stack } from "expo-router";
 
 export default function Layout() {
   return (
-    <Stack screenOptions={{headerShown: false}}>
-      <Stack.Screen name="(client)" />
-      <Stack.Screen name="(employee)" />
-      <Stack.Screen name="(manager)" />
-    </Stack>
+    <>
+      <StatusBar style='light' />
+      <Stack screenOptions={{headerShown: false}}>
+        <Stack.Screen name="(client)" />
+        <Stack.Screen name="(employee)" />
+        <Stack.Screen name="(manager)" />
+      </Stack>
+    </>
   )
 }

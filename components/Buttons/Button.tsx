@@ -4,6 +4,7 @@ import { Pressable, StyleSheet } from 'react-native'
 import { useColorScheme } from '../useColorScheme';
 import Colors from "@/constants/Colors";
 import { InteractiveStyles } from '@/constants/Styles';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function Button ({ 
   Disabled=false, 
@@ -15,6 +16,12 @@ export default function Button ({
   BackgroundColor,
   BorderColor,
   BoldText=false,
+  LeftIcon,
+  LeftIconColor,
+  LeftIconSize,
+  RightIcon,
+  RightIconSize,
+  RightIconColor,
 } : {
   Disabled?: boolean, 
   TextValue?: string,
@@ -25,6 +32,12 @@ export default function Button ({
   BackgroundColor?: string,
   BorderColor?: string,
   BoldText?: boolean,
+  LeftIcon?:string,
+  LeftIconSize?:number,
+  LeftIconColor?:string,
+  RightIcon?:string,
+  RightIconSize?:number,
+  RightIconColor?:string,
 }) {
   
   const colorScheme = useColorScheme();
@@ -44,20 +57,46 @@ export default function Button ({
             style={[
               styles(Selected, colorScheme!).innerContainer,
               Selected ? styles(Selected, colorScheme!, pressed).Selected : InteractiveStyles(pressed, colorScheme!).Shadow, 
+              ButtonWidth ? ({ width: ButtonWidth }) : ({width: '100%'}),
+              
               BackgroundColor ? ({backgroundColor: BackgroundColor}) : (null),
-              BorderColor ? ({borderColor: BorderColor}) : (null),
+              BorderColor ? ({borderColor: BorderColor}) : (BackgroundColor ? ({borderColor: BackgroundColor}) : (null)),
             ]}
           >
-            <Text style={[
-              styles(Selected, colorScheme!, pressed).text, 
-              ButtonWidth ? ({ width: ButtonWidth }) : (null),
-              TextColor ? ({color: TextColor}) : (null),
-              BoldText ? {fontWeight: '600'}: {fontWeight:'400'},
-            ]}
-            
-            >
-              {TextValue}
-            </Text>
+            <View style={styles(Selected, colorScheme!, pressed).textContainer}>
+              
+              {LeftIcon ? (
+                <Ionicons 
+                  name={LeftIcon} 
+                  size={LeftIconSize ? LeftIconSize : 20} 
+                  color={LeftIconColor ? LeftIconColor : (colorScheme === 'light' ? Colors.dark.text : Colors.light.text)} />
+                ):(
+                  null
+                )
+              }
+                            
+              <Text style={[
+                styles(Selected, colorScheme!, pressed).text, 
+                // ButtonWidth ? ({ width: ButtonWidth }) : (null),
+                TextColor ? ({color: TextColor}) : (null),
+                BoldText ? {fontWeight: '600'}: {fontWeight:'400'},
+              ]}
+              
+              >
+                {TextValue}
+              </Text>
+              
+              {RightIcon ? (
+                <Ionicons 
+                  name={RightIcon} 
+                  size={RightIconSize ? RightIconSize : 20} 
+                  color={RightIconColor ? RightIconColor : (colorScheme === 'light' ? Colors.dark.text : Colors.light.text)} />
+                ):(
+                  null
+                )
+              }
+
+            </View>
           </View>
 
         )}
@@ -73,12 +112,22 @@ const styles = (Selected?: boolean, colorScheme?: string, pressed?: boolean) => 
     borderColor: Selected ? Colors.brand[800] : Colors.brand[500],
     borderWidth:1,
     marginVertical: 5,
+    alignSelf: 'center',
   },
   text: {
     overflow: 'hidden',
     textAlign: 'center',
+    fontSize: 15,
     color: Colors.dark.text,
   },
+  textContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+    flexDirection: 'row',
+    gap: 15,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
 
   Selected:{
     opacity: pressed ? 0.5 : 1,
@@ -88,4 +137,5 @@ const styles = (Selected?: boolean, colorScheme?: string, pressed?: boolean) => 
     shadowOpacity: pressed ? 0.25 : .75,
     shadowRadius: pressed ? 2 : 1,
   },
+
 })

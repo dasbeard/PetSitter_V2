@@ -7,8 +7,8 @@ import { useEffect } from 'react';
 import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
-import { jwtDecode } from 'jwt-decode';
 import { Platform } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -40,12 +40,10 @@ const InitialLayout = () => {
   }, [loaded]);
 
   useEffect(() => {    
-    console.log('-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*');
+    console.log('-*-*-*-*-*-*-*- app/Layout UseEffect -*-*-*-*-*-*-*-*');
     
     if (!initialized) return;
-    console.log({segments}); 
-    // console.log({session}); 
-    // console.log({role}); 
+    // console.log({segments}); 
 
     const inAuthGroup = segments[0] === '(authenticated)';
     
@@ -61,7 +59,6 @@ const InitialLayout = () => {
         router.replace('/(authenticated)/(manager)/dashboard')
       } else {
         router.navigate('/register')
-        
       }
     } else if (!session && inAuthGroup){
       console.log('No session');
@@ -105,6 +102,7 @@ const InitialLayout = () => {
                
         <Stack.Screen name="(authenticated)" options={{ headerShown: false }} />
       </Stack>
+      <StatusBar style='dark' />
     </ThemeProvider>
     
   );

@@ -1,47 +1,46 @@
 import { StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text } from '@/components/Themed'
-import { router } from 'expo-router';
+import { router, useRouter, useSegments } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
 import { useAuth } from '@/context/AuthContext';
-
-
-
-const ErrorComponent = ({error}: any) => {
-  return (
-    <View style={errorStyles.container}>
-      <Text style={errorStyles.text}>Error: {error}</Text>
-    </View>
-  )
-}
-
-const errorStyles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: Colors.red[500],
-    padding: 6,
-    backgroundColor: Colors.red[100],
-    marginBottom: 3,
-  },
-  text:{
-    color: Colors.red[900],
-    fontWeight: '600',
-  }
-})
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default function Login() {
   const colorScheme = useColorScheme(); 
 
-	const [email, setEmail] = useState('client1@test.com');
+	const [email, setEmail] = useState('test@test.com');
 	const [password, setPassword] = useState('123456');
 	const [loading, setLoading] = useState(false);
   const [ error, setError ] = useState<string | null>(null)
 
-  const { onLogin, onLogout } = useAuth();
+  const { onLogin, role, session } = useAuth();
+  const router = useRouter();
+  const segments = useSegments();
+
+  useEffect(() => {
+    setTimeout(() => {      
+      const inAuthGroup = segments[0] === '(authenticated)';
+    
+      if(session && !inAuthGroup && role){
+        if (role === 'client'){
+          router.replace('/(authenticated)/(client)/dashboard')
+        } else if ( role === 'employee' ) {
+          router.replace('/(authenticated)/(employee)/dashboard')
+        } else if ( role === 'manager' ) {
+          router.replace('/(authenticated)/(manager)/dashboard')
+        }
+      } else if (!session && inAuthGroup){
+        router.replace('/')
+      }
+    }, 25);
+    
+
+  }, [])
+
 
   const login = async () => {
     setError(null)
@@ -59,10 +58,6 @@ export default function Login() {
       setLoading(false)
 
     }
-  }
-
-  const handleLogout = () => {
-   onLogout!();
   }
 
   const handleCreateAccount = () => {
@@ -86,10 +81,7 @@ export default function Login() {
 
 			<Text style={styles.subheader}>The app to be.</Text>
 
-      { error && <ErrorComponent error={error} /> }
-      {/* <Text>Error: {error}</Text> */}
-      
-      
+      { error && <ErrorMessage message={error} /> }
 
 			<TextInput
 				autoCapitalize="none"
@@ -116,10 +108,6 @@ export default function Login() {
 
       <Button TextValue='Create Account' Function={handleCreateAccount} BackgroundColor='#fff' TextColor={Colors.light.text} />
       
-      {/* <Spacer /> */}
-
-      {/* <Button TextValue='Log Out' Function={handleLogout} BackgroundColor='#fff' TextColor={Colors.light.text} /> */}
-
 			{loading && (
 				<View
 					style={[

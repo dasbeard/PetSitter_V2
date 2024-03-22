@@ -12,7 +12,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 type AuthProps = {
   session: Session | null;
-  onRegister: (email: string, password: string) => Promise<any>;
+  // onRegister: (email: string, password: string) => Promise<any>;
+  onRegister: (email: string, password: string) => Promise<Session | AuthError | null>;
   onLogin: (email: string, password: string) => Promise<Session | AuthError | null>;
   // onLogin: (email: string, password: string) => Promise<any>;
   onLogout: () => void;
@@ -96,10 +97,14 @@ export const AuthProvider = ({ children }: any ) => {
     if (data.session){
       const jwt = jwtDecode<JWT>(data.session.access_token)
       setRole(jwt.user_role)
-      setSession(data.session)
+      setSession(data.session) 
+      console.log('Has Token Data');
+      
+      return Promise.resolve(data.session);
+    } else {
+      console.log('NO Token Data');
+      return Promise.resolve(data.session);
     }
-
-    return Promise.resolve(data.user);
   
   }
 

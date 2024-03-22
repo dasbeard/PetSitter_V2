@@ -1,4 +1,4 @@
-import { StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Image, TextInput, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { View, Text } from '@/components/Themed'
 import { router } from 'expo-router';
@@ -7,45 +7,46 @@ import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
 import { useAuth } from '@/context/AuthContext';
-
-
-const ErrorComponent = ({error}: any) => {
-  return (
-    <View style={errorStyles.container}>
-      <Text style={errorStyles.text}>Error: {error}</Text>
-    </View>
-  )
-}
-
-const errorStyles = StyleSheet.create({
-  container: {
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: Colors.red[500],
-    padding: 6,
-    backgroundColor: Colors.red[100],
-    marginBottom: 3,
-  },
-  text:{
-    color: Colors.red[900],
-    fontWeight: '600',
-  }
-})
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default function Register() {
   const colorScheme = useColorScheme(); 
-
+  const { onRegister } = useAuth();
 	const [email, setEmail] = useState('client1@test.com');
 	const [password, setPassword] = useState('123456');
 	const [passwordConf, setPasswordConf] = useState('123456');
 	const [loading, setLoading] = useState(false);
   const [error, setError ] = useState<string | null>(null)
   const [disabled, setDisabled] = useState<boolean>(false)
-
-  const { onRegister, onLogout } = useAuth();
   
-  const handleRegister = () => {
-   
+  const handleRegister = async () => {
+    setError(null)
+		setLoading(true);
+
+    try {
+    if (!email) {
+      setError('Email must be provided')
+      return
+    }
+    if (!password) {
+      setError('No Password provided')
+      return
+    }
+    if(password !== passwordConf) {
+      setError('Passwords Must Match')
+      return
+    }
+
+      const { error }: any = await onRegister!(email, password);
+      if (error) throw error
+    } catch (error:any) {
+      const errorString = error.toString();
+      const newError = errorString.substring(errorString.indexOf(' ') + 1);
+      // console.log(error.toString().substring(error.indexOf(' ') + 1));
+      setError(newError)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleGoBack = () => {
@@ -81,11 +82,8 @@ export default function Register() {
   
         <Text style={styles.subheader}>The app to be.</Text>
   
-        { error && <ErrorComponent error={error} /> }
-        {/* <Text>Error: {error}</Text> */}
-        
-        
-  
+        { error && <ErrorMessage message={error} /> }
+          
         <TextInput
           autoCapitalize="none"
           placeholder="john@doe.com"
@@ -118,10 +116,6 @@ export default function Register() {
         <Spacer />
   
         <Button TextValue='Back To Login' Function={handleGoBack} BackgroundColor='#fff' TextColor={Colors.light.text} />
-        
-        {/* <Spacer /> */}
-  
-        {/* <Button TextValue='Log Out' Function={handleLogout} BackgroundColor='#fff' TextColor={Colors.light.text} /> */}
   
         {loading && (
           <View
@@ -141,7 +135,8 @@ export default function Register() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 20,
+		paddingBottom: 40,
+		paddingHorizontal: 20,
 		justifyContent: 'center'
 	},
 	image: {
