@@ -10,24 +10,19 @@ export default function ManagerLayout() {
   const colorScheme = useColorScheme(); 
 
   return (
-    <View style={{backgroundColor: colorScheme === 'light' ? Colors.light.background : Colors.dark.background, flex: 1}}>
-    <ManagerHeader />
-    <Stack 
-      screenOptions={{
-        headerShown: false, 
-        contentStyle: {
-          // backgroundColor: colorScheme === 'light' ? Colors.light.background : Colors.dark.background,
-          marginHorizontal:20, 
-          marginVertical: 10,
-
-        }
-      }}
-    >
-      <Stack.Screen redirect={role !== 'manager'} name="dashboard" />
-      <Stack.Screen redirect={role !== 'manager'} name="users" />
-      <Stack.Screen redirect={role !== 'manager'} name="calendar" />
-      <Stack.Screen redirect={role !== 'manager'} name="profile" />
-    </Stack>
-    </View>
+    <>
+      <ManagerHeader />
+      <Stack 
+        screenOptions={{
+          headerShown: false, 
+        }}
+        >
+        <Stack.Screen redirect={role !== 'manager'} name="dashboard" />
+        <Stack.Screen redirect={role !== 'manager'} name="users" />
+        <Stack.Screen redirect={role !== 'manager'} name="calendar" />
+        <Stack.Screen redirect={role !== 'manager'} name="profile" />
+      </Stack>
+    </>
+    
   )
 }

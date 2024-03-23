@@ -96,14 +96,14 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
         <Image
           source={{ uri: avatarUrl }}
           accessibilityLabel="Avatar"
-          style={[avatarSize, styles.avatar, styles.image]}
+          style={[avatarSize, styles.avatar, styles.image, { borderRadius: avatarSize.height / 2 }]}
         />
       ) : (
-        <View style={[avatarSize, styles.avatar, styles.noImage, styles.activityInd]} >
+        <View style={[avatarSize, styles.avatar, styles.noImage, styles.activityInd, { borderRadius: avatarSize.height / 2 }]} >
           <ActivityIndicator style={styles.activityInd} size='large' color={Colors.brandAlt[300]} />
         </View>
       )} 
-      <View style={{marginTop: 20, flex: 1}}>
+      <View style={{marginTop: 20}}>
         <Button
           TextValue={uploading ? 'Uploading ...' : 'Upload'}
           Function={uploadAvatar}
@@ -111,9 +111,7 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
           BackgroundColor={Colors.blue[500]}
           BorderColor={Colors.blue[500]}
           ButtonWidth={150}
-          LeftIcon='cloud-upload-outline'
-          // RightIcon='cloud-upload-outline'
-          
+          LeftIcon='cloud-upload-outline'         
         />
       </View>
     </View>
@@ -122,7 +120,6 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
 
 const styles = StyleSheet.create({
   avatar: {
-    borderRadius: 175,
     overflow: 'hidden',
     maxWidth: '100%',
   },

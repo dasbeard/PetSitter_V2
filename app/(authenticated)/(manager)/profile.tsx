@@ -1,5 +1,5 @@
-import { StyleSheet, TextInput } from 'react-native'
-import {View, Text } from '@/components/Themed'
+import { StyleSheet,  } from 'react-native'
+import {View, Text, TextInput } from '@/components/Themed'
 
 import Button from '@/components/Buttons/Button'
 import { useAuth } from '@/context/AuthContext'
@@ -22,7 +22,7 @@ export default function ManagerProfile() {
   }, [session])
 
   async function getProfile() {
-    console.log(session?.user.id);
+    // console.log(session?.user.id);
     
     try {
       setLoading(true)
@@ -92,10 +92,9 @@ export default function ManagerProfile() {
 
   return (
     <View style={styles.container}>
-      {/* <Text>ManagerProfile</Text> */}
       <View style={styles.avatarContainer}>
       <Avatar
-          size={250}
+          size={210}
           url={avatarUrl}
           onUpload={(url: string) =>{
             setAvatarUrl(url)
@@ -103,7 +102,7 @@ export default function ManagerProfile() {
           }}
           />
       </View>
-      
+     
       <View style={styles.detailsContainer}>
         
         <TextInput 
@@ -112,10 +111,21 @@ export default function ManagerProfile() {
           onChangeText={setUsername}
           placeholder='username'
         />
+        <TextInput 
+          style={styles.inputField}
+          value={firstName}
+          onChangeText={setFirstName}
+          placeholder='First Name'
+        />
+        <TextInput 
+          style={styles.inputField}
+          value={lastName}
+          onChangeText={setLastName}
+          placeholder='Last Name'
+        />
 
         <Button TextValue='Update Profile' Disabled={loading} Function={() => updateProfile({username, firstName, lastName, avatar_url: avatarUrl})} />
         
-
         <Button TextValue='Logout' Function={onLogout} BackgroundColor={Colors.red[500]} RightIcon='log-out-outline' />
 
       </View>
@@ -127,25 +137,27 @@ export default function ManagerProfile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal:20, 
+    marginVertical: 10, 
   },
   avatarContainer: {
     flex: 1,
     alignItems: 'center',
     marginTop: 10,
   },
+  separator: {
+    marginVertical: 10,
+    height: 1,
+    width: '90%',
+    alignSelf: 'center'
+  },
+
   detailsContainer: {
     flex: 1,
 
   },
   inputField: {
 		marginVertical: 4,
-		height: 50,
-		borderWidth: 1,
-		borderColor: Colors.brand[700],
-		borderRadius: 4,
-		padding: 10,
-		color: Colors.brand[800],
-		backgroundColor: Colors.blue[100]
 	},
 
 })

@@ -1,9 +1,12 @@
 import { StyleSheet } from 'react-native'
-import { View, Text } from '@/components/Themed'
+import { View, Text, AlertView, AlertText } from '@/components/Themed'
 
 export default function ManagerCalendar() {
   return (
     <View>
+      <AlertView>
+        <AlertText>Testing</AlertText>
+      </AlertView>
       <Text>ManagerCalendar</Text>
     </View>
   )

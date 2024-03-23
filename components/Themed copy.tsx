@@ -3,7 +3,7 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import { Text as DefaultText, View as DefaultView, TextInput as DefaultTextInput } from 'react-native';
+import { Text as DefaultText, View as DefaultView } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from './useColorScheme';
@@ -15,7 +15,6 @@ type ThemeProps = {
 
 export type TextProps = ThemeProps & DefaultText['props'];
 export type ViewProps = ThemeProps & DefaultView['props'];
-export type InputProps = ThemeProps & DefaultTextInput['props'];
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -43,50 +42,4 @@ export function View(props: ViewProps) {
   const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
-}
-
-export function TextInput(props: InputProps) {
-  const { style, ...otherProps } = props;
-
-  return (<DefaultTextInput 
-    style={[
-      { 
-        color: Colors.brand[900],
-        backgroundColor: Colors.brand[50], 
-        borderColor: Colors.brand[700], 
-        borderWidth: 1,
-        borderRadius: 4,
-        padding: 10,
-        minHeight: 50,
-      },
-      style]}
-     {...otherProps} 
-    />
-  );
-}
-
-export function AlertView(props: ViewProps) {
-  const { style, ...otherProps } = props;
-
-  return (
-    <DefaultView 
-      style={[
-        {     
-          borderWidth: 1,
-          borderRadius: 4,
-          padding: 6,
-          minHeight: 30,
-          borderColor: Colors.red[500],
-          backgroundColor: Colors.red[100], 
-        }, 
-        style]}
-        {...otherProps} />
-  );
-}
-
-
-export function AlertText(props: TextProps) {
-  const { style, ...otherProps } = props;
-
-  return <DefaultText style={[{ color: Colors.red[900]  }, style]} {...otherProps} />;
 }

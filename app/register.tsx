@@ -1,13 +1,12 @@
-import { StyleSheet, Image, TextInput, ActivityIndicator } from 'react-native'
+import { StyleSheet, Image, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
-import { View, Text } from '@/components/Themed'
+import { View, Text, TextInput, AlertView, AlertText } from '@/components/Themed'
 import { router } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
 import { useAuth } from '@/context/AuthContext';
-import ErrorMessage from '@/components/ErrorMessage';
 
 export default function Register() {
   const colorScheme = useColorScheme(); 
@@ -82,7 +81,7 @@ export default function Register() {
   
         <Text style={styles.subheader}>The app to be.</Text>
   
-        { error && <ErrorMessage message={error} /> }
+        { error && <AlertView><AlertText>Error: {error}</AlertText></AlertView>}
           
         <TextInput
           autoCapitalize="none"
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		paddingBottom: 40,
 		paddingHorizontal: 20,
-		justifyContent: 'center'
+		justifyContent: 'center',
 	},
 	image: {
 		width: '100%',
@@ -152,12 +151,5 @@ const styles = StyleSheet.create({
 	},
 	inputField: {
 		marginVertical: 4,
-		height: 50,
-		borderWidth: 1,
-		borderColor: Colors.brand[700],
-		borderRadius: 4,
-		padding: 10,
-		color: Colors.brand[800],
-		backgroundColor: Colors.blue[100]
 	},
 });

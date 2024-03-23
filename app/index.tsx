@@ -1,13 +1,12 @@
-import { StyleSheet, Image, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { View, Text } from '@/components/Themed'
-import { router, useRouter, useSegments } from 'expo-router';
+import { View, Text, TextInput, AlertView, AlertText } from '@/components/Themed'
+import { useRouter, useSegments } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
 import { useAuth } from '@/context/AuthContext';
-import ErrorMessage from '@/components/ErrorMessage';
 
 export default function Login() {
   const colorScheme = useColorScheme(); 
@@ -81,7 +80,7 @@ export default function Login() {
 
 			<Text style={styles.subheader}>The app to be.</Text>
 
-      { error && <ErrorMessage message={error} /> }
+      { error && <AlertView><AlertText>Error: {error}</AlertText></AlertView>}
 
 			<TextInput
 				autoCapitalize="none"
@@ -141,12 +140,5 @@ const styles = StyleSheet.create({
 	},
 	inputField: {
 		marginVertical: 4,
-		height: 50,
-		borderWidth: 1,
-		borderColor: Colors.brand[700],
-		borderRadius: 4,
-		padding: 10,
-		color: Colors.brand[800],
-		backgroundColor: Colors.blue[100]
 	},
 });
