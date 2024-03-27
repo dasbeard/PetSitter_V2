@@ -129,7 +129,7 @@ const dummyData = [
       phone: '+1 (555) 876-5432',
       location: {
         address: '789 Cedar St',
-        city: 'Othertown',
+        city: 'Othertown in the area',
         state: 'TX',
         zipcode: '54321',
         country: 'USA',
@@ -244,7 +244,7 @@ const dummyData = [
       phone: '+1 (555) 234-5678',
       location: {
         address: '789 Maple Ave',
-        city: 'Othertown',
+        city: 'Othertown Around',
         state: 'TX',
         zipcode: '67890',
         country: 'USA',
@@ -358,7 +358,7 @@ const dummyData = [
       phone: '+1 (555) 789-0123',
       location: {
         address: '789 Pine Ln',
-        city: 'Sometown',
+        city: 'Sometown Over There',
         state: 'NY',
         zipcode: '67890',
         country: 'USA',

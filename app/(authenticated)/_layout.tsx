@@ -1,13 +1,15 @@
+import { supabase } from "@/util/supabase";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { AppState } from "react-native";
 
-// AppState.addEventListener('change', (state) => {
-//   if (state === 'active') {
-//     supabase.auth.startAutoRefresh()
-//   } else {
-//     supabase.auth.stopAutoRefresh()
-//   }
-// })
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') {
+    supabase.auth.startAutoRefresh()
+  } else {
+    supabase.auth.stopAutoRefresh()
+  }
+})
 
 
 

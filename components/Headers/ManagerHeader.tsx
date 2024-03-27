@@ -15,7 +15,7 @@ export default function ManagerHeader() {
       <View style={styles.mainContianer}>
         <View style={styles.left}>
 
-        <Link href={'/dashboard'} asChild>
+        <Link href={'/(authenticated)/(manager)/dashboard'} asChild>
             <Pressable>
               {({ pressed }) => (
                 <Image 
@@ -59,7 +59,7 @@ export default function ManagerHeader() {
           </View>
 
           <View style={styles.linkContainer}>
-            <Link href={'/profile'} style={styles.linkContainer} asChild>
+            <Link href={'/profile'} asChild>
               <Pressable>
                 {({ pressed }) => (
                   <Ionicons

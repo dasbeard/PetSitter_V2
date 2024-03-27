@@ -10,9 +10,9 @@ export const InteractiveStyles = (pressed?: boolean, colorScheme?: string) => St
     shadowRadius: pressed ? 3 : 5,
 
   },
-  Border: {
-    borderColor: colorScheme === 'light' ? 'rgba(0, 5, 17, 0.25)' : 'rgba(21, 16, 19, 0.92)',
-  },
+  // Border: {
+  //   borderColor: colorScheme === 'light' ? 'rgba(0, 5, 17, 0.25)' : 'rgba(21, 16, 19, 0.92)',
+  // },
 })
 
 
