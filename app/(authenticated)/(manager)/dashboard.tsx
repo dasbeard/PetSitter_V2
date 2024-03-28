@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 10, 
-  },
+    marginHorizontal: 10,   },
   header:{
     alignSelf: 'center',
     fontSize: 20,

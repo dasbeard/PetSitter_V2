@@ -10,6 +10,13 @@ import { createContext, useContext, useEffect, useState } from "react";
 //   Manager: 'manager';
 // }
 
+type UserDataType = {
+  username: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  avatar_url: string | null;
+}
+
 type AuthProps = {
   session: Session | null;
   // onRegister: (email: string, password: string) => Promise<any>;
@@ -19,6 +26,8 @@ type AuthProps = {
   onLogout: () => void;
   initialized: boolean;
   role: string | null;
+  UserInfo: UserDataType;
+  getProfile: (session: Session) => Promise<any>;
 };
 
 
@@ -36,6 +45,8 @@ export const AuthProvider = ({ children }: any ) => {
   const [ session, setSession ] = useState<Session | null>(null);
   const [ role, setRole ] = useState<string | null>(null);
   const [ initialized, setInitialized ] = useState(false);
+  const [ userInfo, setUserInfo ] = useState<UserDataType | null>()
+  
 
   useEffect(() =>{
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -114,13 +125,56 @@ export const AuthProvider = ({ children }: any ) => {
     setRole(null);
   }
 
+  const getProfile = async (session: Session) => {
+
+    console.log('Running');
+    
+
+    if (!session) return Promise.reject('No Session')
+
+      const { data, error, status } = await supabase 
+        .from('users')
+        .select('username, first_name, last_name, avatar_url')
+        .eq('id', session.user.id)
+        .single()
+
+      if (error && status !== 406){
+        return Promise.reject({error})
+      }
+
+      // console.log({userInfo});
+      // console.log({data});
+      
+      const temp = {
+        avatar_url : data?.avatar_url,
+        username: data?.username,
+        firstName: data?.first_name,
+        lastName: data?.last_name
+      }
+
+      console.log({userInfo});
+
+      setUserInfo(temp)
+
+      console.log({userInfo});
+      // console.log(userInfo?.username);
+      
+
+      return Promise.resolve(userInfo)
+  }
+
+
+
   const value ={
     initialized,
     onLogin: handleLogin,
     onLogout: handleLogout,
     onRegister: handleRegister,
     session,
-    role
+    role,
+    userInfo: userInfo,
+    getProfile
+
   }
   
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

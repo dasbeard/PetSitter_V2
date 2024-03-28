@@ -9,6 +9,7 @@ import Colors from '@/constants/Colors';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import userAuthStore from '@/hooks/auth';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -24,7 +25,12 @@ const InitialLayout = () => {
     ...FontAwesome.font,
   });
   const colorScheme = useColorScheme();
-  const { session, initialized, role } = useAuth();
+  // const { session, initialized, role } = useAuth();
+  // const { initialized, } = useAuth();
+
+  const role = userAuthStore((state) => state.role)
+  const session = userAuthStore((state) => state.session)
+
   const router = useRouter();
   const segments = useSegments();
 
@@ -41,16 +47,20 @@ const InitialLayout = () => {
 
   useEffect(() => {    
     console.log('-*-*-*-*-*-*-*- app/Layout UseEffect -*-*-*-*-*-*-*-*');
+    // console.log('Has Session');
+    console.log({role});
     
-    if (!initialized) return;
+    // if (!initialized) return;
 
-    // console.log({segments}); 
+    console.log({segments}); 
+    console.log({session}); 
+
+
 
     const inAuthGroup = segments[0] === '(authenticated)';
-    
     if(session && !inAuthGroup){
-      // console.log('Has Session');
-      // console.log({role});
+      console.log('Has Session');
+      console.log({role});
       
       if (role === 'client'){
         router.replace('/(authenticated)/(client)/dashboard')
@@ -62,17 +72,22 @@ const InitialLayout = () => {
         router.navigate('/register')
       }
     } else if (!session && inAuthGroup){
-      // console.log('No session');
-      // console.log({role});
+      console.log('No session');
+      console.log({role});
+      
       router.replace('/')
     }
 
-  },[session, initialized, role])
+  
+  },[session, role])
 
-  if (!loaded || !initialized) {
+  if (!loaded ) {
+  // if (!loaded || !initialized) {
   // if (!loaded ) {
     return null;
   }
+
+
 
 
   return (
@@ -112,8 +127,8 @@ const InitialLayout = () => {
 export default function RootLayout() {
 
   return (
-    <AuthProvider>
       <InitialLayout />
-    </AuthProvider>
+    // <AuthProvider>
+    // </AuthProvider>
   )
 }

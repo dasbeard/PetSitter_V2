@@ -17,10 +17,10 @@ export default function ManagerLayout() {
           headerShown: false, 
         }}
         >
-        <Stack.Screen redirect={role !== 'manager'} name="dashboard" />
-        <Stack.Screen redirect={role !== 'manager'} name="users" />
-        <Stack.Screen redirect={role !== 'manager'} name="calendar" options={{presentation: 'modal'}} />
-        <Stack.Screen redirect={role !== 'manager'} name="profile" />
+        <Stack.Screen name="dashboard" />
+        <Stack.Screen name="users" />
+        <Stack.Screen name="calendar" options={{presentation: 'modal'}} />
+        <Stack.Screen name="profile" />
       </Stack>
     </>
     

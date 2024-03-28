@@ -1,3 +1,5 @@
+// import { useAuth } from "@/context/AuthContext";
+import userAuthStore from "@/hooks/auth";
 import { supabase } from "@/util/supabase";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -12,15 +14,17 @@ AppState.addEventListener('change', (state) => {
 })
 
 
-
 export default function Layout() {
+  // const { role } = useAuth();
+  const role = userAuthStore((state) => state.role)
+
   return (
     <>
       <StatusBar style='light' />
       <Stack screenOptions={{headerShown: false}}>
-        <Stack.Screen name="(client)" />
-        <Stack.Screen name="(employee)" />
-        <Stack.Screen name="(manager)" />
+        <Stack.Screen redirect={role !== 'client'} name="(client)" />
+        <Stack.Screen redirect={role !== 'employee'}name="(employee)" />
+        <Stack.Screen redirect={role !== 'manager'} name="(manager)" />
       </Stack>
     </>
   )

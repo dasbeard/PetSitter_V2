@@ -29,7 +29,7 @@ export default function ManagerHeader() {
         
         <View style={styles.right}>
           <View style={styles.linkContainer}>
-            <Link href={'/calendar'} asChild>
+            <Link href={'/(authenticated)/(manager)/calendar'} asChild>
               <Pressable>
                 {({ pressed }) => (
                   <Ionicons 
@@ -44,7 +44,7 @@ export default function ManagerHeader() {
           </View>
 
           <View style={styles.linkContainer}>
-            <Link href={'/users'} asChild>
+            <Link href={'/(authenticated)/(manager)/users'} asChild>
               <Pressable>
                 {({ pressed }) => (
                   <Ionicons 
@@ -59,7 +59,7 @@ export default function ManagerHeader() {
           </View>
 
           <View style={styles.linkContainer}>
-            <Link href={'/profile'} asChild>
+            <Link href={'/(authenticated)/(manager)/profile'} asChild>
               <Pressable>
                 {({ pressed }) => (
                   <Ionicons
