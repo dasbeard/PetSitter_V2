@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native'
 import { Text, View } from '@/components/Themed'
 import { FlashList } from '@shopify/flash-list'
 
-import dummyData from '@/dummydata.js'
-import ClientComponent_Manager from '@/components/ClientComponent_Manager'
+import ClientComponent from '@/components/ClientComponent'
 
+import dummyData from '@/dummydata.js'
 
 export default function ManagerDashboard() {
   return (
@@ -12,7 +12,7 @@ export default function ManagerDashboard() {
       <Text style={styles.header}>Upcoming Visits</Text>
       <FlashList
         data={dummyData}
-        renderItem={({ item }) => <ClientComponent_Manager data={item} /> }
+        renderItem={({ item }) => <ClientComponent data={item} /> }
         estimatedItemSize={50}
       />
     </View>
@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 10, 
-    marginHorizontal: 10,   },
+    marginHorizontal: 4,   
+  },
   header:{
     alignSelf: 'center',
     fontSize: 20,

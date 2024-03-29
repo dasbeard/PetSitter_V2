@@ -1,23 +1,17 @@
 import { supabase } from '@/util/supabase';
-import { AuthError, Session, User } from '@supabase/supabase-js'
+import { AuthError, Session } from '@supabase/supabase-js'
 import { JwtPayload, jwtDecode } from 'jwt-decode';
 import {create} from 'zustand'
-
-// export interface RoleTypes {
-//   Client: 'client';
-//   Employee: 'employee';
-//   Manager: 'manager';
-// }
 
 interface JWT extends JwtPayload {
   user_role: string
 }
 
 export interface UserDataInterface {
-  username: string | null;
-  first_name: string | null;
-  last_name: string| null;
-  avatar_url: string | null;
+  username: string | '';
+  first_name: string | '';
+  last_name: string| '';
+  avatar_url: string | '';
 }
 
 export interface AuthState {
@@ -26,15 +20,31 @@ export interface AuthState {
   signIn: (email: string, password: string) => Promise<Session | AuthError | null>
   register: (email: string, password: string) => Promise<Session | AuthError | null>
   role: string | null;
+  setSessionAndRole: (session: Session | null) => void;
   logout: () => Promise<void>;
-  getProfile: (session: Session) => Promise<any>;
+  getProfile: (session: Session) => Promise<UserDataInterface | any>;
+  updateProfile: (id: string, username: string, first_name: string, last_name: string, avatar_url: string) => Promise<any>
 }
 
-const userAuthStore = create<AuthState>((set) => ({
+
+const useAuthStore = create<AuthState>((set) => ({
   userData: null,
   session: null,
   role: null,
 
+  setSessionAndRole: (session) => {
+    if (!session){
+      //  clear state if no session is passed
+      set({role: null})
+      set({session: null})
+    } else {
+      // Decode jwt and set role
+      set({session: session})
+      const jwt = jwtDecode<JWT>(session.access_token)
+      set({role: jwt.user_role})
+    }
+  },
+  
   signIn: async (email, password) => {
     if (!email || !password) return Promise.reject('Email or Password not valid')
 
@@ -97,7 +107,7 @@ const userAuthStore = create<AuthState>((set) => ({
         first_name: data?.first_name,
         last_name: data?.last_name,
         avatar_url: data?.avatar_url,
-      }
+      } 
       // set the users data
       set({userData: {
         username: data?.username,
@@ -105,20 +115,51 @@ const userAuthStore = create<AuthState>((set) => ({
         last_name: data?.last_name,
         avatar_url: data?.avatar_url,        
       }})
-      // return the user data to the caller
-
-      return Promise.resolve(tempData)
-
-    } catch (error) {
+      // return the user data to the caller      
+      return Promise.resolve({tempData})
       
+    } catch (error) {
+      console.log('error');
+      return Promise.reject({error})
     }
+  },
 
-
-  }
+  updateProfile: async (id, username, first_name, last_name, avatar_url) => {    
+    try {
+      // build values to be sent to the update
+      const values = {
+        id,
+        username,
+        first_name,
+        last_name,
+        avatar_url,
+        updated_at: new Date()
+      } 
+      const { data, error } = await supabase.from('users').upsert(values).select();
+      
+      // check for error with upload
+      if(error) throw error
+      
+      if(data){
+        // update userData state
+        const newData = data[0]
+        set({userData:{
+            username:newData.username,
+            first_name:newData.first_name,
+            last_name:newData.last_name,
+            avatar_url:newData.avatar_url
+        }})
+      }      
+      return Promise.resolve(data[0])
+    } catch (error) {
+      return Promise.reject({error})      
+    }
+  },
+  
 
 
 
 }))
 
 
-export default userAuthStore;
+export default useAuthStore;

@@ -3,13 +3,15 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
 import { AuthProvider, useAuth } from '@/context/AuthContext';
-import { Platform } from 'react-native';
+import { ActivityIndicator, ImageBackground, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import userAuthStore from '@/hooks/auth';
+import useAuthStore from '@/hooks/auth';
+import { supabase } from '@/util/supabase';
+import { View } from '@/components/Themed';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -25,14 +27,14 @@ const InitialLayout = () => {
     ...FontAwesome.font,
   });
   const colorScheme = useColorScheme();
-  // const { session, initialized, role } = useAuth();
-  // const { initialized, } = useAuth();
-
-  const role = userAuthStore((state) => state.role)
-  const session = userAuthStore((state) => state.session)
+  const role = useAuthStore((state) => state.role)
+  const session = useAuthStore((state) => state.session)
+  const setSessionAndRole = useAuthStore((state) => state.setSessionAndRole)
 
   const router = useRouter();
   const segments = useSegments();
+
+  const [ initialized, setInitialized ] = useState<boolean>(false)
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
@@ -40,28 +42,39 @@ const InitialLayout = () => {
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
+    if (loaded && initialized) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, initialized]);
+
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSessionAndRole(session)
+    })    
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSessionAndRole(session)
+    })
+    setTimeout(() => {
+      setInitialized(true)
+    }, 20);
+  },[])
+
 
   useEffect(() => {    
     console.log('-*-*-*-*-*-*-*- app/Layout UseEffect -*-*-*-*-*-*-*-*');
     // console.log('Has Session');
-    console.log({role});
+    // console.log({role});
+    // console.log({segments});
+    // console.log({session});
     
-    // if (!initialized) return;
+    if (!initialized) return;
+    if( session && !role) return
 
-    console.log({segments}); 
-    console.log({session}); 
-
-
-
+      // get the path segments to determine where the user currently is
     const inAuthGroup = segments[0] === '(authenticated)';
-    if(session && !inAuthGroup){
-      console.log('Has Session');
-      console.log({role});
-      
+
+    if(role && !inAuthGroup){
       if (role === 'client'){
         router.replace('/(authenticated)/(client)/dashboard')
       } else if ( role === 'employee' ) {
@@ -69,22 +82,30 @@ const InitialLayout = () => {
       } else if ( role === 'manager' ) {
         router.replace('/(authenticated)/(manager)/dashboard')
       } else {
-        router.navigate('/register')
+        //  safety fallback - should never reach here
+        router.navigate('/')
       }
-    } else if (!session && inAuthGroup){
-      console.log('No session');
-      console.log({role});
-      
+    } else if (!role && inAuthGroup){
+      console.log('No Role');
       router.replace('/')
     }
 
-  
-  },[session, role])
+  },[session, role, initialized])
 
-  if (!loaded ) {
-  // if (!loaded || !initialized) {
   // if (!loaded ) {
-    return null;
+  if (!loaded || !initialized) {
+    // return null;
+    return ( 
+      <View style={{flex: 1, backgroundColor: Colors.brand[500], alignItems: 'center', justifyContent: 'center'}}>
+        <ImageBackground 
+          source={require('@/assets/images/splash.png')} 
+          resizeMode='center'
+          style={{flex: 1}}
+        />
+
+        <ActivityIndicator size={'large'} />
+      </View>
+    )
   }
 
 
@@ -126,9 +147,5 @@ const InitialLayout = () => {
 
 export default function RootLayout() {
 
-  return (
-      <InitialLayout />
-    // <AuthProvider>
-    // </AuthProvider>
-  )
+  return  <InitialLayout /> 
 }

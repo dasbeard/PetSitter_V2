@@ -1,93 +1,49 @@
 import { StyleSheet,  } from 'react-native'
-import {View, Text, TextInput } from '@/components/Themed'
-
+import {View, TextInput, AlertView, AlertText } from '@/components/Themed'
 import Button from '@/components/Buttons/Button'
-import { useAuth } from '@/context/AuthContext'
 import Avatar from '@/components/Avatar'
-import { supabase } from '@/util/supabase'
 import { useEffect, useState } from 'react'
 import Colors from '@/constants/Colors'
+import useAuthStore from '@/hooks/auth'
 
 
 export default function ManagerProfile() {
-  const { onLogout, session } = useAuth()
-  const [loading, setLoading] = useState(true)
+  const userData = useAuthStore((state) => state.userData)
+  const session = useAuthStore((state) => state.session)
+  const logout = useAuthStore((state) => state.logout)
+  const updateProfile = useAuthStore((state) => state.updateProfile)
+  
+  const [loading, setLoading] = useState(false)
+  const [ error, setError ] = useState<string | null>(null)
   const [username, setUsername] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [avatarUrl, setAvatarUrl] = useState('')
 
-  useEffect(() => {
-    if (session) getProfile()
-  }, [session])
-
-  async function getProfile() {
-    // console.log(session?.user.id);
+  useEffect( () => {
+    setValues()
+  }, [userData])
     
-    try {
-      setLoading(true)
-      if (!session?.user) throw new Error('No user on the session!')
-
-      const { data, error, status } = await supabase
-        .from('users')
-        .select(`username, first_name, last_name, avatar_url`)
-        .eq('id', session?.user.id)
-        .single()
-      if (error && status !== 406) {
-        throw error
-      }
-
-      if (data) {
-        setUsername(data.username)
-        setFirstName(data.first_name)
-        setLastName(data.last_name)
-        setAvatarUrl(data.avatar_url)
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message)
-      }
-    } finally {
-      setLoading(false)
-    }
+  const setValues = () => {
+    setUsername(userData?.username!)
+    setFirstName(userData?.first_name!)
+    setLastName(userData?.last_name!)
+    setAvatarUrl(userData?.avatar_url!)
   }
 
-  async function updateProfile({
-    username,
-    firstName,
-    lastName,
-    avatar_url,
-  }: {
-    username: string
-    firstName: string
-    lastName: string
-    avatar_url: string
-  }) {
-    try {
-      setLoading(true)
-      if (!session?.user) throw new Error('No user on the session!')
+  const handleUpdate = async (newAvatar: string) => {
+    setError(null);
+    setLoading(true);
+    const id = session?.user.id!;
+    const { error } = await updateProfile(id, username, firstName, lastName, newAvatar)
 
-      const updates = {
-        id: session?.user.id,
-        username,
-        first_name: firstName, 
-        last_name: lastName,
-        avatar_url,
-        updated_at: new Date(),
-      }
-
-      const { error } = await supabase.from('users').upsert(updates)
-
-      if (error) {
-        throw error
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message)
-      }
-    } finally {
-      setLoading(false)
+    if(error){
+      setError(error)
+      console.log('Error updating profile', error);
+      // alert(error)
     }
+
+    setLoading(false)
   }
 
   return (
@@ -98,13 +54,15 @@ export default function ManagerProfile() {
           url={avatarUrl}
           onUpload={(url: string) =>{
             setAvatarUrl(url)
-            updateProfile({ username, firstName, lastName, avatar_url: url})
+            handleUpdate(url)
           }}
           />
       </View>
      
       <View style={styles.detailsContainer}>
-        
+
+      { error && <AlertView style={{marginBottom: 4}}><AlertText>Error updating profile</AlertText></AlertView>}
+
         <TextInput 
           style={styles.inputField}
           value={username}
@@ -124,9 +82,19 @@ export default function ManagerProfile() {
           placeholder='Last Name'
         />
 
-        <Button TextValue='Update Profile' Disabled={loading} Function={() => updateProfile({username, firstName, lastName, avatar_url: avatarUrl})} />
+        <Button 
+          TextValue='Update Profile' 
+          Disabled={loading} 
+          // Function={() => updateProfile({username, firstName, lastName, avatar_url: avatarUrl})} 
+          Function={handleUpdate} 
+        />
         
-        <Button TextValue='Logout' Function={onLogout} BackgroundColor={Colors.red[500]} RightIcon='log-out-outline' />
+        <Button 
+          TextValue='Logout' 
+          Function={() => logout()} 
+          BackgroundColor={Colors.red[500]} 
+          RightIcon='log-out-outline' 
+        />
 
       </View>
 

@@ -2,11 +2,11 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 // import { useAuth } from '@/context/AuthContext'
 import Button from '@/components/Buttons/Button';
-import userAuthStore from '@/hooks/auth';
+import useAuthStore from '@/hooks/auth';
 
 export default function ClientDashboard() {
   // const { onLogout, role } = useAuth();
-  const logout = userAuthStore((state) => state.logout)
+  const logout = useAuthStore((state) => state.logout)
 
   return (
     <View style={styles.container}>

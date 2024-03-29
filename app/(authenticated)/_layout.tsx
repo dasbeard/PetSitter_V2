@@ -1,9 +1,10 @@
 // import { useAuth } from "@/context/AuthContext";
-import userAuthStore from "@/hooks/auth";
+import useAuthStore from "@/hooks/auth";
 import { supabase } from "@/util/supabase";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { AppState } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, AppState } from "react-native";
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
@@ -14,9 +15,41 @@ AppState.addEventListener('change', (state) => {
 })
 
 
+
 export default function Layout() {
   // const { role } = useAuth();
-  const role = userAuthStore((state) => state.role)
+  const role = useAuthStore((state) => state.role)
+  const session = useAuthStore((state) => state.session)
+  const userData = useAuthStore((state) => state.userData)
+  const getProfile = useAuthStore((state) => state.getProfile)
+
+  const [ loading, setLoading ] = useState<boolean>(true)
+
+
+  useEffect( () => {
+    if(!session) return
+
+    if(userData) {
+      // userdate already fetched
+      setLoading(false)
+      return
+    }
+
+    //  Fetch the users data
+    setLoading(true)    
+    const fetchUserData = async () =>{
+      await getProfile(session!)
+    } 
+    fetchUserData();
+
+    setLoading(false)
+        
+  }, [])
+
+  if(loading){
+    // console.log('*** Checking for data');    
+    return <ActivityIndicator />
+  }
 
   return (
     <>

@@ -37,9 +37,10 @@ const styles = StyleSheet.create({
     fontWeight: '600'
   }, 
   visitContainer:{
-    flex: .85,
+    flex: .75,
     flexDirection: 'row',
     gap: 10,
+    
   },
 
   visitText:{
@@ -48,6 +49,7 @@ const styles = StyleSheet.create({
   }, 
   addressContainer:{
     flex:1.15,
+    marginTop: 6,
   },
   clientAddress:{
     fontSize: 13

@@ -78,6 +78,9 @@ export default function Avatar({ url, size = 150, onUpload }: Props) {
         throw uploadError
       }
 
+      console.log(data.path);
+      
+
       onUpload(data.path)
     } catch (error) {
       if (error instanceof Error) {

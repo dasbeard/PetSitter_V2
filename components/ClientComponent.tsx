@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Image, Pressable } from 'react-native'
+import { StyleSheet, Image, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { View, Text, AlertText, AlertView } from "@/components/Themed";
 
@@ -9,7 +9,7 @@ import { InteractiveStyles } from '@/constants/Styles';
 import { useColorScheme } from './useColorScheme';
 
 
-export default function ClientComponent_Manager({ data }: any) {
+export default function ClientComponent({ data }: any) {
   const colorScheme = useColorScheme()
 
   return(
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginVertical: 8,
-    marginHorizontal: 10,
+    marginHorizontal: 4,
     paddingRight: 4,
     paddingVertical: 6,
     borderWidth: 1,
@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 2,
+    paddingVertical: 2,
+    paddingHorizontal: 6,
     marginRight: 2,
   },
   clientImage:{

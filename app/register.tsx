@@ -7,10 +7,14 @@ import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
 import { useAuth } from '@/context/AuthContext';
+import useAuthStore from '@/hooks/auth';
 
 export default function Register() {
   const colorScheme = useColorScheme(); 
-  const { onRegister } = useAuth();
+  // const { onRegister } = useAuth();
+
+  const register = useAuthStore((state) => state.register)
+
 	const [email, setEmail] = useState('client1@test.com');
 	const [password, setPassword] = useState('123456');
 	const [passwordConf, setPasswordConf] = useState('123456');
@@ -23,25 +27,25 @@ export default function Register() {
 		setLoading(true);
 
     try {
-    if (!email) {
-      setError('Email must be provided')
-      return
-    }
-    if (!password) {
-      setError('No Password provided')
-      return
-    }
-    if(password !== passwordConf) {
-      setError('Passwords Must Match')
-      return
-    }
-
-      const { error }: any = await onRegister!(email, password);
+      if (!email) {
+        setError('Email must be provided')
+        return
+      }
+      if (!password) {
+        setError('No Password provided')
+        return
+      }
+      if(password !== passwordConf) {
+        setError('Passwords Must Match')
+        return
+      }
+      const { error }: any = await register!(email, password);
       if (error) throw error
     } catch (error:any) {
-      const errorString = error.toString();
+      console.log(error);
+      
+      const errorString = error.error.toString();
       const newError = errorString.substring(errorString.indexOf(' ') + 1);
-      // console.log(error.toString().substring(error.indexOf(' ') + 1));
       setError(newError)
     } finally {
       setLoading(false)
@@ -52,17 +56,6 @@ export default function Register() {
     router.replace('/')
   }
 
-
-  // const handleDisabled = () => {
-  //   if (email.length < 1) return
-  //   if (password.length < 5) return
-  //   if (password !== passwordConf) return
-  //   console.log('here');
-    
-
-  //   setDisabled(false)
-
-  // }
 
   return (
       <View style={styles.container}>
@@ -120,10 +113,10 @@ export default function Register() {
           <View
             style={[
               StyleSheet.absoluteFill,
-              { backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1, justifyContent: 'center' }
+              { backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1, justifyContent: 'center', alignItems: 'center' }
             ]}
           >
-            <ActivityIndicator color="#fff" size="large" />
+            <ActivityIndicator style={{transform:[{scale: 2.5}], paddingBottom: 40}} color={Colors.brand[500]} size="large" />
           </View>
         )}
       </View>

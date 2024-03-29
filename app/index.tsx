@@ -1,73 +1,44 @@
 import { StyleSheet, Image, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View, Text, TextInput, AlertView, AlertText } from '@/components/Themed'
-import { useRouter, useSegments } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
-import { useAuth } from '@/context/AuthContext';
-import userAuthStore from '@/hooks/auth';
+import useAuthStore from '@/hooks/auth';
 
 export default function Login() {
   const colorScheme = useColorScheme(); 
 
-	const [email, setEmail] = useState('client1@test.com');
+	const [email, setEmail] = useState('employee1@test.com');
 	const [password, setPassword] = useState('123456');
 	const [loading, setLoading] = useState(false);
   const [ error, setError ] = useState<string | null>(null)
 
-  // const { onLogin, role, session } = useAuth();
-  const signIn = userAuthStore((state) => state.signIn)
-  const role = userAuthStore((state) => state.role)
-  const session = userAuthStore((state) => state.session)
+  const signIn = useAuthStore((state) => state.signIn)
   
   const router = useRouter();
-  const segments = useSegments();
-
-  console.log(role);
-
-  useEffect(() => {
-    setTimeout(() => {      
-      const inAuthGroup = segments[0] === '(authenticated)';
-      
-
-      if(session && !inAuthGroup && role){
-        console.log({role});
-        
-        if (role === 'client'){
-          router.replace('/(authenticated)/(client)/dashboard')
-        } else if ( role === 'employee' ) {
-          router.replace('/(authenticated)/(employee)/dashboard')
-        } else if ( role === 'manager' ) {
-          router.replace('/(authenticated)/(manager)/dashboard')
-        }
-      } else if (!session && inAuthGroup){
-        router.replace('/')
-      }
-    }, 25);
-    
-
-  }, [])
 
 
-  // const login = async () => {
-  //   setError(null)
-	// 	setLoading(true);
-  //   try {
-  //     const { error }: any = await onLogin!(email, password);
-  //     if (error) throw error
-  //   } catch (error:any) {
-  //     const errorString = error.toString();
-  //     const newError = errorString.substring(errorString.indexOf(' ') + 1);
-  //     // console.log(error.toString().substring(error.indexOf(' ') + 1));
-  //     // alert(error)
-  //     setError(newError)
-  //   } finally {
-  //     setLoading(false)
 
-  //   }
-  // }
+  const handleSignIn = async () => {
+    setError(null)
+		setLoading(true);
+    try {
+      const { error }: any = await signIn(email, password);
+      if (error) throw error
+    } catch (error:any) {
+      const errorString = error.toString();
+      const newError = errorString.substring(errorString.indexOf(' ') + 1);
+      // console.log(error.toString().substring(error.indexOf(' ') + 1));
+      // alert(error)
+      setError(newError)
+    } finally {
+      setLoading(false)
+
+    }
+  }
 
   const handleCreateAccount = () => {
     router.navigate('/register')
@@ -90,7 +61,7 @@ export default function Login() {
 
 			<Text style={styles.subheader}>The app to be.</Text>
 
-      { error && <AlertView><AlertText>Error: {error}</AlertText></AlertView>}
+      { error && <AlertView style={{marginBottom: 4}}><AlertText>{error}</AlertText></AlertView>}
 
 			<TextInput
 				autoCapitalize="none"
@@ -111,8 +82,7 @@ export default function Login() {
 
       <Spacer Size={4} />
 
-      <Button TextValue='Sign In' Function={() => signIn(email,password)} />
-      {/* <Button TextValue='Sign In' Function={login} /> */}
+      <Button TextValue='Sign In' Function={handleSignIn} />
 
       <Spacer />
 
@@ -125,7 +95,7 @@ export default function Login() {
 						{ backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 1, justifyContent: 'center' }
 					]}
 				>
-					<ActivityIndicator color="#fff" size="large" />
+					<ActivityIndicator style={{transform:[{scale: 2.5}], paddingBottom: 40}} color={Colors.brand[500]} size="large" />
 				</View>
 			)}
 		</View>
