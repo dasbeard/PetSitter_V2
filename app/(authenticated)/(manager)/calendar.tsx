@@ -1,19 +1,17 @@
 import { StyleSheet } from 'react-native'
-import { View, Text, AlertView, AlertText } from '@/components/Themed'
+import { View, Text, AlertView, AlertText, BGView } from '@/components/Themed'
 
 export default function ManagerCalendar() {
   return (
-    <View style={styles.container}>
+    <BGView style={styles.container}>
       <Text>ManagerCalendar</Text>
-    </View>
+    </BGView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginVertical: 10, 
-    marginHorizontal: 10, 
-
+    flex: 1, 
+    padding: 10,
   },
 })

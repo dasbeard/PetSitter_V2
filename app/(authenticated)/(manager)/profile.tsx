@@ -1,5 +1,5 @@
 import { StyleSheet,  } from 'react-native'
-import {View, TextInput, AlertView, AlertText } from '@/components/Themed'
+import {View, TextInput, AlertView, AlertText, BGView } from '@/components/Themed'
 import Button from '@/components/Buttons/Button'
 import Avatar from '@/components/Avatar'
 import { useEffect, useState } from 'react'
@@ -47,8 +47,8 @@ export default function ManagerProfile() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.avatarContainer}>
+    <BGView style={styles.container}>
+      <BGView style={styles.avatarContainer}>
       <Avatar
           size={210}
           url={avatarUrl}
@@ -57,9 +57,9 @@ export default function ManagerProfile() {
             handleUpdate(url)
           }}
           />
-      </View>
+      </BGView>
      
-      <View style={styles.detailsContainer}>
+      <BGView style={styles.detailsContainer}>
 
       { error && <AlertView style={{marginBottom: 4}}><AlertText>Error updating profile</AlertText></AlertView>}
 
@@ -96,17 +96,16 @@ export default function ManagerProfile() {
           RightIcon='log-out-outline' 
         />
 
-      </View>
+      </BGView>
 
-    </View>
+    </BGView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginHorizontal:20, 
-    marginVertical: 10, 
+    flex: 1, 
+    padding: 10,
   },
   avatarContainer: {
     flex: 1,

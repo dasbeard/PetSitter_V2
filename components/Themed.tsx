@@ -40,9 +40,17 @@ export function Text(props: TextProps) {
 
 export function View(props: ViewProps) {
   const { style, lightColor, darkColor, ...otherProps } = props;
-  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'view');
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
+}
+
+export function BGView(props: ViewProps) {
+  const { style, lightColor, darkColor, ...otherProps } = props;
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
+  // const backgroundColor = useThemeColor({ light: 'grey', dark: 'green' }, 'background');
+
+  return <DefaultView style={[{ backgroundColor } , style]} {...otherProps} />;
 }
 
 export function TextInput(props: InputProps) {

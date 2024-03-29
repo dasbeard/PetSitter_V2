@@ -16,13 +16,18 @@ export default {
     900: '#2b0815',
   },
 
+  borderDark: '#090227',
+
   light: {
     text: '#000',
-    background: '#f4f6f5',
+    background: '#f4f4f6',
+    // view: '#e3e3e8',
+    view: '#f2f2f3',
   },
   dark: {
     text: '#fff',
-    background: '#181b1b',
+    background: '#141316',
+    view: '#2d2b31',
   },
 
   altText: '#343333',

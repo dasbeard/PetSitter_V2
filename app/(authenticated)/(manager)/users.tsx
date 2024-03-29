@@ -1,17 +1,17 @@
 import { StyleSheet } from 'react-native'
-import { Text, View } from '@/components/Themed'
+import { BGView, Text, View } from '@/components/Themed'
 
 export default function ManageUsers() {
   return (
-    <View style={styles.container}>
+    <BGView style={styles.container}>
       <Text>Users Managment</Text>
-    </View>
+    </BGView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginVertical: 10, 
+    flex: 1, 
+    padding: 10,
   },
 })

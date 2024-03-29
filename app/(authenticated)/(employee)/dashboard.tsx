@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { Text, View } from '@/components/Themed'
+import { BGView, Text, View } from '@/components/Themed'
 import { FlashList } from '@shopify/flash-list'
 
 import ClientComponent from '@/components/ClientComponent'
@@ -10,22 +10,21 @@ import dummyData from '@/dummydata.js'
 export default function EmployeeDashboard() {
 
   return (
-    <View style={styles.container}>
+    <BGView style={styles.container}>
       <Text style={styles.header}>Upcoming Visits</Text>
       <FlashList
         data={dummyData}
         renderItem={({ item }) => <ClientComponent data={item} /> }
         estimatedItemSize={50}
       />
-    </View>
+    </BGView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginVertical: 10, 
-    marginHorizontal: 4,   
+    flex: 1, 
+    padding: 10,
   },
   header:{
     alignSelf: 'center',

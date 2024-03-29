@@ -11,7 +11,7 @@ import useAuthStore from '@/hooks/auth';
 export default function Login() {
   const colorScheme = useColorScheme(); 
 
-	const [email, setEmail] = useState('employee1@test.com');
+	const [email, setEmail] = useState('test@test.com');
 	const [password, setPassword] = useState('123456');
 	const [loading, setLoading] = useState(false);
   const [ error, setError ] = useState<string | null>(null)
