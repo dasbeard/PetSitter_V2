@@ -33,7 +33,7 @@ export default function EventComponent_Manager({ data }: any) {
   return(
     <Pressable 
       style={{
-        paddingHorizontal: 10
+        paddingHorizontal: 8
       }}>
       {({ pressed }) =>(    
 
@@ -46,14 +46,16 @@ export default function EventComponent_Manager({ data }: any) {
               </AlertView>
           } 
 
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>{data.appointmentTime}</Text>
+          <View style={styles.eventTime} lightColor={Colors.blue[100]} darkColor={Colors.blue[700]}>
+            <Text style={styles.eventTimeText}>{data.appointmentTime}</Text>
           </View>
 
           <View style={styles.topRow}>
 
             <View style={styles.userContainer}>
-              <Image style={styles.clientImage} source={{uri: data.employee.picture.avatar_url}} />
+              <View style={styles.imageShadowContainer}>
+                <Image style={styles.clientImage} source={{uri: data.employee.picture.avatar_url}} />
+              </View>
               <Text style={styles.userName}>{data.employee.firstName}</Text>
             </View>
 
@@ -62,7 +64,9 @@ export default function EventComponent_Manager({ data }: any) {
             </View>
             
             <View style={styles.userContainer}>
-              <Image style={styles.clientImage} source={{uri: data.client.picture.avatar_url}} />
+              <View style={styles.imageShadowContainer}>
+                <Image style={styles.clientImage} source={{uri: data.client.picture.avatar_url}} />
+              </View>
               <Text style={styles.userName}>{data.client.firstName}</Text>
             </View>
 
@@ -113,9 +117,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
   },
-  tag:{
+  eventTime:{
     flex: 1,
-    backgroundColor: Colors.blue[100],
+    // backgroundColor: Colors.blue[100],
     paddingVertical: 5,
     marginTop: -8,
     overflow: 'hidden',
@@ -123,8 +127,10 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
   },
-  tagText:{
+  eventTimeText:{
     textAlign: 'center',
+    fontWeight: '500',
+    letterSpacing: 0.5,
     // fontSize: 13,    
   },
   topRow: {
@@ -145,7 +151,17 @@ const styles = StyleSheet.create({
     borderRadius: 90 / 2,
     objectFit: 'contain',
     overflow: 'hidden',
+
   },
+  
+  imageShadowContainer:{
+    borderRadius: 90 / 2,
+    elevation: 1,
+    shadowOffset: {height: 2, width: 1},
+    shadowOpacity: .25,
+    shadowRadius: 2,
+  },
+
   userName:{
     paddingVertical: 4
   },

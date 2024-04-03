@@ -1,60 +1,80 @@
+const Brand = '251'
+const BrandAlt = '338'
+const BGBase = '240'
+const green = '132'
+const orange = '47'
+const red = '0'
+const blue = '220'
+
 export default {
   brand: {
-    50: '#edeafb',
-    100: '#c9c0f2',
-    300: '#765ede',
-    500: '#472acb',
-    700: '#2a1877',
-    800: '#160d3f',
-    900: '#0c0722',
+    50: `hsl(${Brand}, 68%, 95%)`,
+    100: `hsl(${Brand}, 66%, 90%)`,
+    300: `hsl(${Brand}, 66%, 70%)`,
+    500: `hsl(${Brand}, 66%, 50%)`,
+    700: `hsl(${Brand}, 66%, 30%)`,
+    800: `hsl(${Brand}, 66%, 20%)`,
+    900: `hsl(${Brand}, 66%, 10%)`,
   },
+  
   brandAlt: {
-    100: '#f7d4e1',
-    300: '#e77ea4',
-    500: '#d6296b',
-    700: '#81183e',
-    900: '#2b0815',
+    100: `hsl(${BrandAlt}, 68%, 90%)`,
+    300: `hsl(${BrandAlt}, 68%, 70%)`,
+    500: `hsl(${BrandAlt}, 68%, 50%)`,
+    600: `hsl(${BrandAlt}, 68%, 40%)`,
+    700: `hsl(${BrandAlt}, 68%, 30%)`,
+    800: `hsl(${BrandAlt}, 68%, 20%)`,
+    900: `hsl(${BrandAlt}, 68%, 10%)`,
   },
-
-  borderDark: '#090227',
+  
+  borderDark: `hsl(${Brand}, 90%, 8%)`,
 
   light: {
     text: '#000',
-    background: '#f4f4f6',
-    disabled: '#b2b2b7',
-    view: '#f2f2f3',
+    background: `hsl(${BGBase}, 10%, 96%)`,
+    disabled: `hsl(${BGBase}, 3.5%, 70%)`,
+    view: `hsl(${BGBase}, 4%, 95%)`,
   },
   dark: {
     text: '#fff',
-    background: '#141316',
-    view: '#2d2b31',
-    disabled: '#58585d',
+    background: `hsl(${Brand}, 7%, 8%)`,
+    view: `hsl(${Brand}, 3.5%, 18%)`,
+    disabled: `hsl(${Brand}, 4%, 35%)`,
   },
 
-  altText: '#343333',
+  altText: 'hsl(0, 1%, 20%)',
 
   green: {
-    100: '#d1fad9',
-    300: '#75f08e',
-    500: '#19e642',
-    700: '#0f8a28',
-    900: '#052e0d',
+    100: `hsl(${green}, 80%, 90%)`,
+    300: `hsl(${green}, 80%, 70%)`,
+    500: `hsl(${green}, 80%, 50%)`,
+    700: `hsl(${green}, 80%, 30%)`,
+    900: `hsl(${green}, 80%, 10%)`,
   },
+  
   orange: {
-    100: '#faf4db',
-    500: '#e3ba27',
-    900: '#362c07',
+    100: `hsl(${orange}, 80%, 90%)`,
+    300: `hsl(${orange}, 80%, 70%)`,
+    500: `hsl(${orange}, 80%, 50%)`,
+    700: `hsl(${orange}, 80%, 30%)`,
+    900: `hsl(${orange}, 80%, 10%)`,
   },
   red: {
-    100: '#ffcccc',
-    500: '#ff0000',
-    900: '#330000',
+    100: `hsl(${red}, 80%, 90%)`,
+    300: `hsl(${red}, 80%, 70%)`,
+    500: `hsl(${red}, 80%, 50%)`,
+    700: `hsl(${red}, 80%, 30%)`,
+    900: `hsl(${red}, 80%, 10%)`,
   },
   blue: {
-    100: '#dde8fd',
-    500: '#1f65f1',
-    900: '#04183f',
+    100: `hsl(${blue}, 80%, 90%)`,
+    300: `hsl(${blue}, 80%, 70%)`,
+    500: `hsl(${blue}, 80%, 50%)`,
+    700: `hsl(${blue}, 80%, 30%)`,
+    800: `hsl(${blue}, 80%, 20%)`,
+    900: `hsl(${blue}, 80%, 10%)`,
   },
 
 };
 
+ 
