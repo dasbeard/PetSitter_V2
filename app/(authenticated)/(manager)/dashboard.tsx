@@ -49,6 +49,8 @@ export default function ManagerDashboard() {
         // renderItem={({ item }) => <EventComponent_Manager data={item} /> }
         renderItem={({ item }) => renderItem(item) }
         estimatedItemSize={50}
+        // 
+        
         
       />
     </BGView>

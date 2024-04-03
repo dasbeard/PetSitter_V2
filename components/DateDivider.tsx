@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { View, Text, BGView } from './Themed'
+import { Text, BGView } from './Themed'
 import Colors from '@/constants/Colors'
 import { InteractiveStyles } from '@/constants/Styles'
 import { useColorScheme } from './useColorScheme'
