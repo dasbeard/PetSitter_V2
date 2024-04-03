@@ -21,21 +21,24 @@ export default {
   light: {
     text: '#000',
     background: '#f4f4f6',
-    // view: '#e3e3e8',
+    disabled: '#b2b2b7',
     view: '#f2f2f3',
   },
   dark: {
     text: '#fff',
     background: '#141316',
     view: '#2d2b31',
+    disabled: '#58585d',
   },
 
   altText: '#343333',
 
   green: {
-    100: '#d4f7e3',
-    500: '#28d771',
-    900: '#082b17',
+    100: '#d1fad9',
+    300: '#75f08e',
+    500: '#19e642',
+    700: '#0f8a28',
+    900: '#052e0d',
   },
   orange: {
     100: '#faf4db',

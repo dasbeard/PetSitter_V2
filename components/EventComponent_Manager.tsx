@@ -1,9 +1,7 @@
 import { StyleSheet, Image, Pressable } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { Ionicons, Entypo } from '@expo/vector-icons'
 import { View, Text, AlertText, AlertView } from "@/components/Themed";
 
-import ClientData from '@/components/ClientData'
-import PetListItem from '@/components/PetListItem'
 import Colors from '@/constants/Colors'
 import { InteractiveStyles } from '@/constants/Styles';
 import { useColorScheme } from './useColorScheme';
@@ -12,100 +10,211 @@ import { useColorScheme } from './useColorScheme';
 export default function EventComponent_Manager({ data }: any) {
   const colorScheme = useColorScheme();
 
+  const imageTypes = [
+    {
+      id:'boarding',
+      light: require('@/assets/icons/Boarding_Icon.png'),
+      dark: require('@/assets/icons/Boarding_Icon_Alt.png'),
+    },
+    {
+      id:'dogwalk',
+      light: require('@/assets/icons/Dog_Walk_Icon.png'),
+      dark: require('@/assets/icons/Dog_Walk_Icon_Alt.png'),
+    },
+    {
+      id:'homevisit',
+      light: require('@/assets/icons/Pet_Food_Icon.png'),
+      dark: require('@/assets/icons/Pet_Food_Icon_Alt.png'),
+    },
+  ]
+
+  let Icon = imageTypes.find(ob => ob.id === data.type.replace(' ','').toLowerCase());
+
   return(
-    <Pressable>
+    <Pressable style={{paddingHorizontal: 10}}>
       {({ pressed }) =>(
+      
+      // <View style={styles.outer}>
+      //   <View style={styles.tag}>
+      //     <Text style={styles.tagText}>Morning</Text>
+      //   </View>
+      
 
-      <View style={[styles.outerContainer, InteractiveStyles(pressed, colorScheme!).Shadow]}>
-        <View style={styles.clientImageContainer}>
-          <Image style={styles.clientImage} source={{uri: data.client.picture.avatar_url}} />
-        </View>
+      <View style={[styles.container, InteractiveStyles(pressed, colorScheme!).Shadow]}>
+        { 
+          (data.id % 2 == 0) &&
+            <AlertView style={styles.alertsContainer}>          
+            <Ionicons name='alert' color={Colors.red[500]} size={16} />
+            <AlertText style={styles.alertText}>Warning goes here</AlertText>                
+            </AlertView>
+        } 
 
-        <View style={styles.contentContainer}>
-          { 
-            (data.id % 2 == 0) &&
-              <AlertView style={styles.alertsContainer}>          
-              <Ionicons name='alert' color={Colors.red[500]} size={16} />
-              <AlertText style={styles.alertText}>Warning goes here</AlertText>                
-              </AlertView>
-          } 
-          <View style={styles.client}>
-            <View style={{flex:2}}>
-              <ClientData clientData={data} />
+        <View style={styles.topRow}>
+          <View style={styles.userContainer}>
+            <Image style={styles.clientImage} source={{uri: data.employee.picture.avatar_url}} />
+            <Text style={styles.userName}>{data.employee.firstName}</Text>
+          </View>
+
+          <View style={styles.arrow}>
+            <Entypo name='arrow-right' size={26} />
+          </View>
+          
+          <View style={styles.userContainer}>
+            <Image style={styles.clientImage} source={{uri: data.client.picture.avatar_url}} />
+            <Text style={styles.userName}>{data.client.firstName}</Text>
+          </View>
+
+          <View style={styles.eventTypeContainer}>
+            <View style={styles.eventTypeImageContainer}>
+              <Image style={styles.eventTypeImage} source={ colorScheme === 'light' ? Icon?.light : Icon?.dark } />
             </View>
+            <Text style={styles.userName}>{data.type}</Text>
+          </View>
 
-            <View style={styles.pets}>
-              {data.pets.map((pet: any, _idx: number, array: []) => {
-                if (array.length <= 3){
-                  return <PetListItem key={_idx} pet={pet} _idx={_idx} />
-                } else {
-                  if ( _idx < 3){
-                    return <PetListItem key={_idx} pet={pet} _idx={_idx} />
-                  } if (_idx === 3){
-                    return <Text style={{marginVertical: 3, marginLeft: 2}} key={4}>+ {array.length - 3} more</Text>
-                  }
-                }
+        </View>
+        
+        <View style={styles.bottomRow}>
+          <View style={styles.addressContainer}>
+            <Text style={styles.address}>{data.client.location.address}, {data.client.location.city}</Text>
+          </View>
 
-              })}
+          <View style={styles.checklist}>
+            <View style={styles.checklistItem}>
+              <Entypo name='check' size={18} color={colorScheme === 'light' ? Colors.green[700]: Colors.green[500]} />
+              <Text style={{color: colorScheme === 'light' ? Colors.green[700]: Colors.green[500]}}>Checked-In</Text>
+            </View>
+            <View style={styles.checklistItem}>
+              <Entypo name='check' size={18} color={colorScheme === 'light' ? Colors.light.disabled : Colors.dark.disabled} />
+              <Text style={{color: colorScheme === 'light' ? Colors.light.disabled : Colors.dark.disabled}}>Completed</Text>
             </View>
 
           </View>
+
         </View>
+        
       </View>
+      // </View>
       )}
     </Pressable>
   )
-
 }
 
+
 const styles = StyleSheet.create({
-  outerContainer: {
+  outer:{
     flex: 1,
     flexDirection: 'row',
-    marginVertical: 8,
-    // marginHorizontal: 2,
-    paddingRight: 4,
-    paddingVertical: 6,
+  },
+  tag:{
+
+  },
+  tagText:{
+    
+  },
+  container: {
+    flex: 1,
+    // marginVertical: 8,
+    marginBottom: 12,
+    marginTop: 3,
+    paddingVertical: 8,
+    // paddingHorizontal: 4,
     borderWidth: 1,
-    borderRadius: 4,
-    height: 145,
+    borderRadius: 6,
   },
 
-  clientImageContainer:{
+  topRow: {
+    flex: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  userContainer:{
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 2,
-    paddingHorizontal: 8,
-    marginRight: 2,
   },
   clientImage:{
-    height: 100,
-    width: 100,
-    borderRadius: 100 / 2,
+    height: 90,
+    width: 90,
+    borderRadius: 90 / 2,
     objectFit: 'contain',
     overflow: 'hidden',
   },
-  contentContainer:{
-    flex: 2.5,
+  userName:{
+
   },
-  alertsContainer:{
-    flexDirection: 'row',
+
+  arrow:{
+    flex: .2,
+    // borderWidth: 1,
+    // borderColor: 'red',
+  },
+  eventTypeContainer:{
+    flex: .75,
     alignItems: 'center',
-    paddingVertical: 0,
-    marginTop: -2,
-    minHeight: 22,
-    marginBottom: 2,
+    // height: '100%',
+    // justifyContent: 'space-around',
+    // paddingVertical: 2,
+    
+
   },
-  alertText:{
+  eventTypeImageContainer:{
+    height: 90,
+    justifyContent: 'center',
+  },
+  eventTypeImage:{
+    height: 55,
+    width: 55,
+    objectFit: 'contain',
+    overflow: 'hidden',
+  },
+  
+  bottomRow:{
+    flex: 1,
+    flexDirection: 'row',
+    gap: 10,
+    marginVertical: 4,
+  },  
+  addressContainer:{
+    flex: 1.5,
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    // backgroundColor: 'rgba(0,0,0,0)',
+  },
+  address:{
+    fontWeight: '300',
     fontSize: 13,
     
   },
-  client:{
-    flex: 3,
-    flexDirection: 'row',
-  },
-  pets:{
+  checklist:{
     flex: 1,
+    // backgroundColor: 'rgba(0,0,0,0)',
+    // borderWidth: 1,
+    // borderColor: 'green',
   },
+  checklistItem:{
+    flex: 1,
+    flexDirection: 'row',
+    gap: 6,
+    // backgroundColor: 'rgba(0,0,0,0)',
+  },
+
+
+
+  alertsContainer:{
+    flex: .5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // paddingVertical: 0,
+    // marginHorizontal: 4,
+    marginHorizontal: 1,
+    marginTop: -3,
+    // minHeight: 22,
+    marginBottom: 4,
+  },
+  alertText:{
+    fontSize: 13,
+  },
+
 })
