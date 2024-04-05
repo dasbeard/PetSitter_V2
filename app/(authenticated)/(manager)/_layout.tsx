@@ -13,7 +13,9 @@ export default function ManagerLayout() {
         >
         <Stack.Screen name="dashboard" />
         <Stack.Screen name="users" />
-        <Stack.Screen name="calendar" options={{presentation: 'modal'}} />
+        <Stack.Screen name="calendar" 
+          // options={{presentation: 'modal'}} 
+        />
         <Stack.Screen name="profile" />
       </Stack>
     </>

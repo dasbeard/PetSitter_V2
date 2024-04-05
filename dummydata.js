@@ -4,7 +4,7 @@ const dummyData = [
     createdOn: '2024-03-25 14:07:00.000+00',
     updatedOn: '2024-03-25 14:07:00.000+00',
     type: 'Dog Walk',
-    appointmentDate: new Date('2024-03-25'),
+    appointmentDate: '2024-03-25 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 10,
@@ -119,7 +119,7 @@ const dummyData = [
     createdOn: '2024-03-04 23:01:00.000+00',
     updatedOn: '2024-03-04 23:01:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-03-04'),
+    appointmentDate: '2024-03-04 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 10,
@@ -234,7 +234,7 @@ const dummyData = [
     createdOn: '2024-02-23 00:10:00.000+00',
     updatedOn: '2024-02-23 00:10:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-02-23'),
+    appointmentDate: '2024-02-23 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 13,
@@ -348,7 +348,7 @@ const dummyData = [
     createdOn: '2024-03-26 21:03:00.000+00',
     updatedOn: '2024-03-26 21:03:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-03-26'),
+    appointmentDate: '2024-03-26 09:01:05+00',
     appointmentTime: 'Afternoon',
     client: {
       id: 16,
@@ -462,7 +462,7 @@ const dummyData = [
     createdOn: '2024-03-04 18:04:00.000+00',
     updatedOn: '2024-03-04 18:04:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-03-04'),
+    appointmentDate: '2024-03-04 09:01:05+00',
     appointmentTime: 'Afternoon',
     client: {
       id: 13,
@@ -542,7 +542,7 @@ const dummyData = [
     createdOn: '2024-02-12 15:13:00.000+00',
     updatedOn: '2024-02-12 15:13:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-02-12'),
+    appointmentDate: '2024-02-12 19:01:05+00',
     appointmentTime: 'Afternoon',
     client: {
       id: 13,
@@ -656,7 +656,7 @@ const dummyData = [
     createdOn: '2024-03-16 16:07:00.000+00',
     updatedOn: '2024-03-16 16:07:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-03-16'),
+    appointmentDate: '2024-03-16 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 16,
@@ -770,7 +770,7 @@ const dummyData = [
     createdOn: '2024-03-06 01:01:00.000+00',
     updatedOn: '2024-03-06 01:01:00.000+00',
     type: 'Dog Walk',
-    appointmentDate: new Date('2024-03-06'),
+    appointmentDate: '2024-03-06 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 14,
@@ -834,7 +834,7 @@ const dummyData = [
     createdOn: '2024-02-13 22:10:00.000+00',
     updatedOn: '2024-02-13 22:10:00.000+00',
     type: 'Dog Walk',
-    appointmentDate: new Date('2024-02-13'),
+    appointmentDate: '2024-02-13 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 10,
@@ -949,7 +949,7 @@ const dummyData = [
     createdOn: '2024-03-17 19:11:00.000+00',
     updatedOn: '2024-03-17 19:11:00.000+00',
     type: 'Dog Walk',
-    appointmentDate: new Date('2024-03-17'),
+    appointmentDate: '2024-03-17 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 13,
@@ -1029,7 +1029,7 @@ const dummyData = [
     createdOn: '2024-02-25 15:05:00.000+00',
     updatedOn: '2024-02-25 15:05:00.000+00',
     type: 'Dog Walk',
-    appointmentDate: new Date('2024-02-25'),
+    appointmentDate: '2024-02-25 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 14,
@@ -1093,7 +1093,7 @@ const dummyData = [
     createdOn: '2024-02-14 16:14:00.000+00',
     updatedOn: '2024-02-14 16:14:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-02-14'),
+    appointmentDate: '2024-02-14 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 1,
@@ -1175,7 +1175,7 @@ const dummyData = [
     createdOn: '2024-03-19 01:08:00.000+00',
     updatedOn: '2024-03-19 01:08:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-03-19'),
+    appointmentDate: '2024-03-19 09:01:05+00',
     appointmentTime: 'Afternoon',
     client: {
       id: 19,
@@ -1290,7 +1290,7 @@ const dummyData = [
     createdOn: '2024-02-26 22:08:00.000+00',
     updatedOn: '2024-02-26 22:08:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-02-26'),
+    appointmentDate: '2024-02-26 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 10,
@@ -1405,7 +1405,7 @@ const dummyData = [
     createdOn: '2024-03-29 19:02:00.000+00',
     updatedOn: '2024-03-29 19:02:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-03-29'),
+    appointmentDate: '2024-03-29 09:01:05+00',
     appointmentTime: 'Afternoon',
     client: {
       id: 13,
@@ -1519,7 +1519,7 @@ const dummyData = [
     createdOn: '2024-03-08 00:11:00.000+00',
     updatedOn: '2024-03-08 00:11:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-03-08'),
+    appointmentDate: '2024-03-08 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 13,
@@ -1599,7 +1599,7 @@ const dummyData = [
     createdOn: '2024-02-26 17:05:00.000+00',
     updatedOn: '2024-02-26 17:05:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-02-26'),
+    appointmentDate: '2024-02-26 09:01:05+00',
     appointmentTime: 'Afternoon',
     client: {
       id: 14,
@@ -1663,7 +1663,7 @@ const dummyData = [
     createdOn: '2024-03-30 14:14:00.000+00',
     updatedOn: '2024-03-30 14:14:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-03-30'),
+    appointmentDate: '2024-03-30 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 7,
@@ -1761,7 +1761,7 @@ const dummyData = [
     createdOn: '2024-03-09 23:00:00.000+00',
     updatedOn: '2024-03-09 23:00:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-03-09'),
+    appointmentDate: '2024-03-09 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 7,
@@ -1859,7 +1859,7 @@ const dummyData = [
     createdOn: '2024-02-17 00:09:00.000+00',
     updatedOn: '2024-02-17 00:09:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-02-17'),
+    appointmentDate: '2024-02-17 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 8,
@@ -1958,7 +1958,7 @@ const dummyData = [
     createdOn: '2024-03-31 00:03:00.000+00',
     updatedOn: '2024-03-31 00:03:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-03-31'),
+    appointmentDate: '2024-03-31 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 13,
@@ -2038,7 +2038,7 @@ const dummyData = [
     createdOn: '2024-02-29 00:12:00.000+00',
     updatedOn: '2024-02-29 00:12:00.000+00',
     type: 'Home Visit',
-    appointmentDate: new Date('2024-02-29'),
+    appointmentDate: '2024-02-29 09:01:05+00',
     appointmentTime: 'Evening',
     client: {
       id: 13,
@@ -2152,7 +2152,7 @@ const dummyData = [
     createdOn: '2024-02-08 23:06:00.000+00',
     updatedOn: '2024-02-08 23:06:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-02-08'),
+    appointmentDate: '2024-02-08 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 16,
@@ -2266,7 +2266,7 @@ const dummyData = [
     createdOn: '2024-03-12 00:00:00.000+00',
     updatedOn: '2024-03-12 00:00:00.000+00',
     type: 'Dog Walk',
-    appointmentDate: new Date('2024-03-12'),
+    appointmentDate: '2024-03-12 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 1,
@@ -2330,7 +2330,7 @@ const dummyData = [
     createdOn: '2024-03-01 21:09:00.000+00',
     updatedOn: '2024-03-01 21:09:00.000+00',
     type: 'Boarding',
-    appointmentDate: new Date('2024-03-01'),
+    appointmentDate: '2024-03-01 09:01:05+00',
     appointmentTime: 'Morning',
     client: {
       id: 13,
