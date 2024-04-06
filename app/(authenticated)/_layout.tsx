@@ -1,4 +1,3 @@
-// import { useAuth } from "@/context/AuthContext";
 import useAuthStore from "@/hooks/auth";
 import { supabase } from "@/util/supabase";
 import { Stack } from "expo-router";
@@ -17,7 +16,6 @@ AppState.addEventListener('change', (state) => {
 
 
 export default function Layout() {
-  // const { role } = useAuth();
   const role = useAuthStore((state) => state.role)
   const session = useAuthStore((state) => state.session)
   const userData = useAuthStore((state) => state.userData)

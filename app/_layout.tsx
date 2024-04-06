@@ -6,7 +6,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import { useColorScheme } from '@/components/useColorScheme';
 import Colors from '@/constants/Colors';
-import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { ActivityIndicator, ImageBackground, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import useAuthStore from '@/hooks/auth';

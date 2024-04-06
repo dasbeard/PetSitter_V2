@@ -9,22 +9,6 @@ import DateDivider from '@/components/DateDivider'
 
 import dayjs from 'dayjs'
 dayjs.locale('en') // use locale
-// dayjs.extend(utc)
-
-// const testDate = '2024-02-23 09:01:05+00'
-// const testDate2 = '2024-04-05 17:09:16+00'
-// // console.log({testDate2});
-// const UTCTime = dayjs(testDate + ':00').valueOf()
-// console.log({UTCTime});
-
-// const testing = dayjs(UTCTime).format('ddd MMM D, YYYY')
-// console.log({testing});
-
-
-// const now = dayjs(testDate + ':00').valueOf()
-// console.log({now});
-
-
 
 
 const dummyDataDated = dummyDataSource.map((item) => {

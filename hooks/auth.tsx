@@ -1,6 +1,7 @@
 import { supabase } from '@/util/supabase';
 import { AuthError, Session } from '@supabase/supabase-js'
 import { JwtPayload, jwtDecode } from 'jwt-decode';
+import "core-js/stable/atob";
 import {create} from 'zustand'
 
 interface JWT extends JwtPayload {

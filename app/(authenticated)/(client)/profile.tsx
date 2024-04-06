@@ -1,22 +1,22 @@
 import { StyleSheet } from 'react-native'
 import {View, Text} from '@/components/Themed'
-import { useAuth } from '@/context/AuthContext'
+// import { useAuth } from '@/context/AuthContext'
 import { useEffect } from 'react';
 
 
 export default function Profile() {
-  const { getProfile, UserInfo, session } = useAuth();
+  // const { getProfile, UserInfo, session } = useAuth();
 
-  useEffect(() => {
-    const test = getProfile!(session!)
-    console.log('Profile ----');
-    console.log({test});
-    // console.log({error});
-    // console.log({data});
-    console.log('---- Profile');
+  // useEffect(() => {
+  //   const test = getProfile!(session!)
+  //   console.log('Profile ----');
+  //   console.log({test});
+  //   // console.log({error});
+  //   // console.log({data});
+  //   console.log('---- Profile');
     
-    // console.log(UserInfo);
-  },[])
+  //   // console.log(UserInfo);
+  // },[])
 
 
   // console.log(UserInfo);
@@ -25,7 +25,7 @@ export default function Profile() {
   return (
     <View style={styles.container}>
       <Text>Client Profile</Text>
-      <Text>Username: {UserInfo?.username}</Text>
+      {/* <Text>Username: {UserInfo?.username}</Text> */}
       
     </View>
   )

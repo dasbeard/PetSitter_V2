@@ -6,12 +6,10 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import Button from '@/components/Buttons/Button';
 import Spacer from '@/components/Spacer';
-import { useAuth } from '@/context/AuthContext';
 import useAuthStore from '@/hooks/auth';
 
 export default function Register() {
   const colorScheme = useColorScheme(); 
-  // const { onRegister } = useAuth();
 
   const register = useAuthStore((state) => state.register)
 

@@ -3,20 +3,87 @@ import { View, Text, BGView } from '@/components/Themed'
 import {Calendar, CalendarUtils} from 'react-native-calendars';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Colors from '@/constants/Colors';
+import dayjs from 'dayjs'
+dayjs.locale('en') // use locale
 
 import dummyDataSource from '@/dummydata.js'
-import dummyData from '@/dummydata.js';
+
+const dummyDataDated = dummyDataSource.map((item) => {
+  const formatedDate = dayjs(item.appointmentDate + ':00').format('YYYY-MM-DD')
+  return {...item, date: formatedDate}
+})
+
+const INITIAL_DATE = dayjs().format('YYYY-MM-DD')
+
+const Marked_Dates = () => {
+  let dd = {};
+  const morning = {key: 'morning', color: Colors.blue[500], selectedDotColor: Colors.brand[500]}
+  const afternoon = {key: 'afternoon', color: Colors.green[500], selectedDotColor: Colors.brand[500]}
+  const evening = {key: 'evening', color: Colors.orange[500], selectedDotColor: Colors.brand[500]}
+
+    dummyDataSource.map((item) => {
+    let dots: any=[];
+    const date = dayjs(item.appointmentDate + ':00').format('YYYY-MM-DD')
+    
+    if (date in dd){
+      if (item.appointmentTime.toLowerCase() === 'morning'){
+        dd[date].dots.splice(0,0, morning)
+      } else if (item.appointmentTime.toLowerCase() === 'afternoon'){
+        if (dd[date].dots[0].key === 'morning'){
+          dd[date].dots.push(afternoon)
+        } else {
+          dd[date].dots.splice(0,0, afternoon)
+        }
+      } else if (item.appointmentTime.toLowerCase() === 'evening'){
+        dd[date].dots.push(evening)
+      }     
+
+    } else {
+
+      if (item.appointmentTime.toLowerCase() === 'morning'){
+        dots.push(morning)
+      } else if (item.appointmentTime.toLowerCase() === 'afternoon'){
+        dots.push(afternoon)
+      } else if (item.appointmentTime.toLowerCase() === 'evening'){
+        dots.push(evening)
+      }
+      
+      dd={...dd, [date]:{dots}}
+    }
+
+  })
+
+  // console.log(JSON.stringify(dd));
+
+  return dd
+}
 
 
-// const INITIAL_DATE = '2022-07-06'
-const Today = new Date()
-const TodaySplit = new Date(Today.setHours(0)).toISOString().split('T')
-const INITIAL_DATE = TodaySplit[0]
+
+
+
+// Marked_Dates();
 
 export default function ManagerCalendar() {
   const [selected, setSelected] = useState(INITIAL_DATE);
-  const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
-  const [markedDates, setMarkedDates] = useState();
+  // const [currentMonth, setCurrentMonth] = useState(INITIAL_DATE);
+  const [markedDates, setMarkedDates] = useState<any>();
+  const [displayDates, setDisplayDates] = useState();
+  
+
+  const marked = useMemo(() => {
+    const result = Marked_Dates();
+
+    return {
+      ...result, 
+      [selected]: {
+        selected: true,
+        // disableTouchEvent: true,
+        selectedColor: Colors.brand[500],
+        selectedTextColor: Colors.dark.text
+      }
+    };
+  }, [selected]);
 
 
   const getDate = (count: number) => {
@@ -25,80 +92,18 @@ export default function ManagerCalendar() {
     return CalendarUtils.getCalendarDateString(newDate);
   };
 
+  const returnSelectedDates = (date:any) => {
+    const results = dummyDataDated.filter((item) => item.date === date)
+    return results
+  }
+
   const onDayPress = useCallback((day: any) => {
     setSelected(day.dateString);
-    console.log({day});
-    console.log('Pressed day:', day.dateString);
-    // console.log('Pressed day:', new Date(day.dateString));
-    
+    // console.log({day});
+    const dates = returnSelectedDates(day.dateString)
+    setDisplayDates(dates)
+
   }, []);
-
-
-
-  // '2024-04-16': {
-  //   selected: true,
-  //   dots: [
-  //     {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
-  //     {key: 'massage', color: 'red', selectedDotColor: 'white'},
-  //   ]
-  // },
-  
-// const getDays = () => {
-  // const dummyData = dummyDataSource.sort(((firstItem:any, secondItem:any) => firstItem.appointmentDate - secondItem.appointmentDate))
-  
-  // const Dates = dummyDataSource.map((item) => {
-  //   const date = item.appointmentDate.toISOString().split('T')
-  //   const dateParse = date[0]
-      
-  //   const subset:any = {...Dates, [dateParse]: {selected: false, dots: [{key: 'vacation', color: 'blue', selectedDotColor: 'red'}]}}
-
-  //   return subset
-  // })
-  // console.log(Dates);
-
-//   let returnObj = {}
-//   Dates.map((item) => {
-//     console.log(item);
-    
-//     // returnObj={...returnObj, item}
-//   })
-
-//   console.log(returnObj);
-//   return Dates
-// }
-
-  // useEffect(() => {
-  //   const days = getDays()
-  //   console.log(days[0]);
-    
-  //   setMarkedDates(days[0])
-  // },[])
-  
-
-// getDays()
-  
-  // const marked = useMemo(() => {
-  //   return {
-  //     [getDate(-2)]: {
-  //       dotColor: 'red',
-  //       marked: true
-  //     },
-  //     [selected]: {
-  //       selected: true,
-  //       // disableTouchEvent: true,
-  //       selectedColor: Colors.brand[500],
-  //       selectedTextColor: Colors.dark.text
-  //     }
-  //   };
-  // }, [selected]);
-
-  // const markedDates = {
-  //   '2024-04-02': { marked: true, selectedColor: 'blue'},
-  //   '2024-04-04': { marked: true, dotColor: 'red', activeOpacity: 0},
-  //   '2024-04-05': { marked: true},
-  //   '2024-04-06': { disabled: true, disableTouchEvent: true},
-  // }
-
 
   return (
     <BGView style={styles.container}>
@@ -115,31 +120,7 @@ export default function ManagerCalendar() {
           markingType={'multi-dot'}
           current={INITIAL_DATE}
           onDayPress={onDayPress}
-          // markedDates={markedDates}
-          // markedDates={marked}
-          markedDates={{
-            '2024-04-16': {
-              // selected: true,
-              dots: [
-                {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'white'},
-              ]
-            },
-            [getDate(2)]: {
-              selected: true,
-              dots: [
-                {key: 'vacation', color: 'blue', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'white'},
-              ]
-            },
-            [getDate(3)]: {
-              disabled: true,
-              dots: [
-                {key: 'vacation', color: 'green', selectedDotColor: 'red'},
-                {key: 'massage', color: 'red', selectedDotColor: 'green'}
-              ]
-            }
-          }}
+          markedDates={marked}
 
           theme={{
             calendarBackground: 'rgba(0,0,0,0)',
@@ -167,14 +148,26 @@ export default function ManagerCalendar() {
               }
             }
           }}
-
-
         />
-
 
         </View>
 
         <View style={styles.selectedDateContainer}>
+        
+          <Text>{dayjs(selected).format('MMM D, YYYY')}</Text>
+          {/* map over all dates on selectyed date */}
+          {displayDates &&
+            displayDates.map((d) => (
+              
+              // Should return a component with all data of the event
+              
+              <Text key={d.id}>
+                {d.id}
+              </Text>
+            ))
+          }
+             
+
 
         </View>
 
